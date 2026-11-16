@@ -623,13 +623,18 @@ section .inner{position:relative;z-index:1;}
 }
 .outfit-title{
   font-family:'Josefin Sans',sans-serif;
-  font-size:clamp(0.55rem, 1.8vw, 0.7rem);
+  font-size:clamp(0.8rem, 2.6vw, 1.05rem);   /* was 0.55–0.7rem */
   letter-spacing:0.25em;
   text-transform:uppercase;
   color:#C9A84C;
-  padding-bottom:0.6rem;
+  padding-bottom:0.7rem;
   border-bottom:1px solid rgba(201,168,76,0.4);
-  margin-bottom:0.2rem;
+  margin-bottom:0.3rem;
+}
+  .guest-photo .outfit-title{
+  display:block;
+  width:fit-content;
+  margin:0 auto 1.2rem;
 }
 .outfit-line{
   font-family:'Cormorant Garamond',serif;
@@ -649,6 +654,9 @@ section .inner{position:relative;z-index:1;}
   padding:0;
   text-align:center;
 }
+
+  
+  
 .guest-photo img{
   width:100%;
   height:auto;
@@ -659,8 +667,9 @@ section .inner{position:relative;z-index:1;}
   display:flex;
   flex-direction:column;
   gap:0.4rem;
-  margin-top:1rem;
+ margin-top:0.2rem;      /* was 1rem */
 }
+
 .guest-msg{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(1rem, 3.5vw, 1.25rem);
@@ -1117,11 +1126,10 @@ section .inner{position:relative;z-index:1;}
       </figcaption>
     </figure>
 
-           <div class="ent-group">
-          <p class="ent-gtitle">— Guests Outfit —</p>
-        </div>
+      
 
 <figure class="guest-photo">
+  <span class="outfit-title">Guests Outfit</span>
   <img src="images/guest.png" alt="Guest outfit inspiration" loading="lazy">
   <figcaption>
     <span class="guest-msg">We kindly request our guests to wear formal attire.</span>
