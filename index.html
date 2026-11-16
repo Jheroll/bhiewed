@@ -1000,12 +1000,26 @@ padding-top:68px;            /* was 84px, moves the logo up */
   a.nav-brand{text-decoration:none;}
 
   /* ── BANNER LOGO: higher + softer (keep this LAST in <style>) ── */
-.pb-logo{
-  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.4)) opacity(0.5) !important;   /* was 0.7, lower = more faded */
-}
+
 .photo-banner{
   padding-top:68px !important;       /* desktop: just under the 60px nav */
 }
+
+  /* ── BANNER LOGO: pinned to the top, softer ── */
+.pb-logo{
+  position:absolute !important;
+  top:70px !important;                 /* desktop: just under the 60px nav */
+  left:0 !important;
+  right:0 !important;
+  margin:0 auto !important;            /* centers it */
+  z-index:2;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.4)) opacity(0.5) !important;
+}
+@media(max-width:600px){
+  .pb-logo{
+    top:8px !important;                /* phone: right at the top, no nav */
+    width:clamp(60px, 16vw, 80px) !important;
+  }
   
 </style>
 </head>
