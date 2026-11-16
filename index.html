@@ -108,6 +108,7 @@ section{padding:5rem 2rem;}
 .ent-names{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:0.5rem 1.2rem;margin-bottom:0.8rem;}
 .ent-names:last-child{margin-bottom:0;}
 .ent-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;line-height:1.5;color:#5C1523;}
+.ent-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;color:#9A6B75;text-align:center;margin:1rem 0 0.4rem;}
 
 /* ── FOOTER ── */
 footer{background:#3D0C11;color:#E8B4BB;text-align:center;padding:3rem 2rem;}
@@ -1212,7 +1213,7 @@ section .inner{position:relative;z-index:1;}
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
 
-  <!-- ENTOURAGE -->
+   <!-- ENTOURAGE -->
   <section id="entourage" style="background:#FDF6EE;">
     <div class="sec-bg" aria-hidden="true">
       <svg width="100%" height="100%" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid slice">
@@ -1235,41 +1236,105 @@ section .inner{position:relative;z-index:1;}
         <path class="wave1" d="M0,620 C250,575 450,640 700,600 C840,575 890,620 900,595 L900,700 L0,700 Z" fill="#E8B4BB" opacity="0.05"/>
       </svg>
     </div>
+
     <div class="inner">
       <p class="sec-label reveal">♦ The Wedding Party ♦</p>
       <h2 class="sec-title reveal">Our Beloved Entourage</h2>
       <div class="sec-div reveal"></div>
+
       <div class="stagger">
-      <div class="ent-group"><p class="ent-gtitle">— Parents of the Groom—</p><span class="ent-name">Robert &amp; Lelita Porras</span></div></div>
-      <div class="ent-group"><p class="ent-gtitle">— Parents of the Bride—</p><span class="ent-name">Romeo &amp; Josephine Rodriguez</span></div></div>
-    <div class="ent-group"><p class="ent-gtitle">— Principal Sponsors —</p>
-      <div class="ent-names"><span class="ent-name">Angelito &amp; Susan Rodriguez</span></div>
-      <div class="ent-names"><span class="ent-name">Joe &amp; Susan Caruana</span></div>
-      <div class="ent-names"><span class="ent-name">Cerilio &amp; Loida Dela Luya</span></div>
-      <div class="ent-names"><span class="ent-name">Elmer &amp; Merilin Rodriguez</span></div>
-      <div class="ent-names"><span class="ent-name">George &amp; Lorenie Maullon</span></div>
-      <div class="ent-names"><span class="ent-name">Mario Carlo Dizon</span></div>
-      <div class="ent-names"><span class="ent-name">Maribeth Ramos</span></div>
-      <div class="ent-names"><span class="ent-name">Ryan Reyes</span></div>
-      <div class="ent-names"><span class="ent-name">Annabelle Garcia</span></div>
-      <div class="ent-names"><span class="ent-name">Amelita Legaspi</span></div>
-    </div>
-        <div class="ent-group"><p class="ent-gtitle">— Best Man —</p><div class="ent-names"><span class="ent-name">Leo Sagitarios</span></div></div>
-      <div class="ent-group"><p class="ent-gtitle">— Maid of Honor —</p><div class="ent-names"><span class="ent-name">Anne Bernadette Laudato</span></div></div>
-      <div class="ent-group"><p class="ent-gtitle">— Groomsmen —</p><div class="ent-names"><span class="ent-name">Jervin Tolentino</span><span class="ent-name"> · </span><span class="ent-name">Enrie John Edem</span></div></div>
-      <div class="ent-group"><p class="ent-gtitle">— Bridesmaids —</p><div class="ent-names"><span class="ent-name">Lianne Kristel Alpis</span><span class="ent-name"> · </span><span class="ent-name">Nikee Ibarrientos</span></div></div>
-      <div class="ent-group"><p class="ent-gtitle">— Secondary Sponsors —</p></div>
-        <div class="ent-group"><p class="ent-gtitle">— Candle—</p><div class="ent-names"><span class="ent-name">Zyrone Topacio</span><span class="ent-name"> · </span><span class="ent-name">Janine Demabildo</span></div></div>
-        <div class="ent-group"><p class="ent-gtitle">— Veil—</p><div class="ent-names"><span class="ent-name">John Philip Porras</span><span class="ent-name"> · </span><span class="ent-name">Sarah Jane Porras</span></div></div>
-        <div class="ent-group"><p class="ent-gtitle">— Cord—</p><div class="ent-names"><span class="ent-name">Jeric Ramos</span><span class="ent-name"> · </span><span class="ent-name">Jealou Rodriguez</span></div></div>
-        <div class="ent-group"><p class="ent-gtitle">— Ring Bearer —</p><div class="ent-names"><span class="ent-name">Ezekiel Gomez</span></div></div>
-        <div class="ent-group"><p class="ent-gtitle">— Bible Bearer —</p><div class="ent-names"></span><span class="ent-name">Zeth Hunter Dela Luya</span></div></div>
-        <div class="ent-group"><p class="ent-gtitle">— Coin Bearer —</p><div class="ent-names"></span><span class="ent-name">Ralph Caleb Pangilinan</span></div></div>
-      <div class="ent-group"><p class="ent-gtitle">— Flower Girls —</p><div class="ent-names"><span class="ent-name">Kamila Pauleen Buhain</span><span class="ent-name"> · </span><span class="ent-name">Bria Porcioncula</span></div></div>
-     
-       
-      </div>
-    </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Parents of the Groom —</p>
+          <div class="ent-names"><span class="ent-name">Robert &amp; Lelita Porras</span></div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Parents of the Bride —</p>
+          <div class="ent-names"><span class="ent-name">Romeo &amp; Josephine Rodriguez</span></div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Principal Sponsors —</p>
+          <div class="ent-names"><span class="ent-name">Angelito &amp; Susan Rodriguez</span></div>
+          <div class="ent-names"><span class="ent-name">Joe &amp; Susan Caruana</span></div>
+          <div class="ent-names"><span class="ent-name">Cerilio &amp; Loida Dela Luya</span></div>
+          <div class="ent-names"><span class="ent-name">Elmer &amp; Merilin Rodriguez</span></div>
+          <div class="ent-names"><span class="ent-name">George &amp; Lorenie Maullon</span></div>
+          <div class="ent-names"><span class="ent-name">Mario Carlo Dizon</span></div>
+          <div class="ent-names"><span class="ent-name">Maribeth Ramos</span></div>
+          <div class="ent-names"><span class="ent-name">Ryan Reyes</span></div>
+          <div class="ent-names"><span class="ent-name">Annabelle Garcia</span></div>
+          <div class="ent-names"><span class="ent-name">Amelita Legaspi</span></div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Best Man —</p>
+          <div class="ent-names"><span class="ent-name">Leo Sagitarios</span></div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Maid of Honor —</p>
+          <div class="ent-names"><span class="ent-name">Anne Bernadette Laudato</span></div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Groomsmen —</p>
+          <div class="ent-names">
+            <span class="ent-name">Jervin Tolentino</span><span class="ent-name">·</span><span class="ent-name">Enrie John Edem</span>
+          </div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Bridesmaids —</p>
+          <div class="ent-names">
+            <span class="ent-name">Lianne Kristel Alpis</span><span class="ent-name">·</span><span class="ent-name">Nikee Ibarrientos</span>
+          </div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Secondary Sponsors —</p>
+
+          <p class="ent-sub">Candle</p>
+          <div class="ent-names">
+            <span class="ent-name">Zyrone Topacio</span><span class="ent-name">·</span><span class="ent-name">Janine Demabildo</span>
+          </div>
+
+          <p class="ent-sub">Veil</p>
+          <div class="ent-names">
+            <span class="ent-name">John Philip Porras</span><span class="ent-name">·</span><span class="ent-name">Sarah Jane Porras</span>
+          </div>
+
+          <p class="ent-sub">Cord</p>
+          <div class="ent-names">
+            <span class="ent-name">Jeric Ramos</span><span class="ent-name">·</span><span class="ent-name">Jealou Rodriguez</span>
+          </div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Ring Bearer —</p>
+          <div class="ent-names"><span class="ent-name">Ezekiel Gomez</span></div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Bible Bearer —</p>
+          <div class="ent-names"><span class="ent-name">Zeth Hunter Dela Luya</span></div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Coin Bearer —</p>
+          <div class="ent-names"><span class="ent-name">Ralph Caleb Pangilinan</span></div>
+        </div>
+
+        <div class="ent-group">
+          <p class="ent-gtitle">— Flower Girls —</p>
+          <div class="ent-names">
+            <span class="ent-name">Kamila Pauleen Buhain</span><span class="ent-name">·</span><span class="ent-name">Bria Porcioncula</span>
+          </div>
+        </div>
+
+      </div><!-- /stagger -->
+    </div><!-- /inner -->
   </section>
 
     <!-- PLAYLIST -->
