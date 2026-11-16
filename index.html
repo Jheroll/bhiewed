@@ -278,8 +278,9 @@ section:hover .sec-div{animation:shimmer 1.5s ease infinite;}
 .upload-hint{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(125,29,48,0.6));color:#FDF6EE;font-family:'Josefin Sans',sans-serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;text-align:center;padding:0.75rem 0.5rem 0.5rem;opacity:0;transition:opacity 0.3s;}
 .t-photo-frame:hover .upload-hint{opacity:1;}
 
-  /* ── TIMELINE FIXES ── */
+/* ── TIMELINE FIXES ── */
 .t-item{padding-left:0;}
+.t-item > *{grid-row:1;}
 .t-dot{position:static;}
 @keyframes pulseDot{0%,100%{box-shadow:0 0 0 1px #C9A84C;}50%{box-shadow:0 0 0 6px rgba(201,168,76,0.2);}}
 
