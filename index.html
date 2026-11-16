@@ -829,34 +829,122 @@ section .inner{position:relative;z-index:1;}
   position:relative;
   z-index:2;
 }
-.pb-names{
-  font-family:'Pinyon Script',cursive;
-  font-weight:400;
-  font-size:clamp(3rem, 11vw, 8rem);
-  line-height:1.1;
-  color:#FDF6EE;
-  text-shadow:0 2px 20px rgba(0,0,0,0.4);
+/* ── PHOTO BANNER ── */
+.photo-banner{
+  position:relative;
+  min-height:100vh;
+  min-height:100svh;
+  padding:84px 1.5rem 2.5rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  text-align:center;
+  background:#2a0d12;
+  overflow:hidden;
+}
+.pb-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 30%;
+  z-index:0;
+  animation:fadeIn 1.6s ease both;
+}
+.pb-shade{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(to bottom, rgba(30,5,8,0.5) 0%, rgba(30,5,8,0.15) 40%, rgba(30,5,8,0.78) 100%);
+}
+.pb-logo{
+  position:relative;
+  z-index:2;
+  width:clamp(70px, 11vw, 110px);
+  height:auto;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  animation:fadeDown 1s ease both;
+  animation-delay:0.4s;
+}
+
+/* Names on the left and right of the couple */
+.pb-names-row{
+  position:absolute;
+  top:clamp(120px, 22vh, 220px);
+  left:0;
+  right:0;
+  z-index:2;
+  display:flex;
+  justify-content:space-between;
+  padding:0 clamp(1.5rem, 6vw, 6rem);
+  pointer-events:none;
+}
+.pb-person{
   animation:fadeUp 1.1s ease both;
   animation-delay:0.8s;
 }
-.pb-names span{color:#E8D5A3;}
+.pb-first{
+  font-family:'Pinyon Script',cursive;
+  font-size:clamp(2.6rem, 8vw, 6.5rem);
+  line-height:1.05;
+  color:#FDF6EE;
+  text-shadow:0 2px 20px rgba(0,0,0,0.45);
+}
+.pb-last{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:500;
+  font-size:clamp(0.7rem, 1.7vw, 1.05rem);
+  letter-spacing:0.4em;
+  text-transform:uppercase;
+  color:#E8D5A3;
+  margin-top:0.4rem;
+  padding-left:0.4em;     /* balances the letter-spacing so it looks centered */
+  text-shadow:0 1px 8px rgba(0,0,0,0.5);
+}
+
+/* Bottom invitation text */
+.pb-bottom{
+  position:relative;
+  z-index:2;
+}
+.pb-ornament{
+  font-family:'Josefin Sans',sans-serif;
+  font-size:clamp(0.55rem, 1.8vw, 0.7rem);
+  letter-spacing:0.35em;
+  text-transform:uppercase;
+  color:#E8D5A3;
+  margin-bottom:0.9rem;
+  animation:fadeUp 0.9s ease both;
+  animation-delay:1s;
+}
 .pb-date{
   font-family:'Josefin Sans',sans-serif;
-  font-size:clamp(0.6rem, 2vw, 0.78rem);
+  font-size:clamp(0.6rem, 2vw, 0.85rem);
   letter-spacing:0.3em;
   text-transform:uppercase;
+  color:#FDF6EE;
+  text-shadow:0 1px 10px rgba(0,0,0,0.5);
+  animation:fadeUp 0.9s ease both;
+  animation-delay:1.2s;
+}
+.pb-tagline{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(1.1rem, 3.2vw, 1.6rem);
   color:#E8D5A3;
   margin-top:0.6rem;
   animation:fadeUp 0.9s ease both;
-  animation-delay:1.1s;
+  animation-delay:1.4s;
 }
 .pb-scroll{
   display:inline-block;
-  margin-top:1.4rem;
+  margin-top:1.2rem;
   color:#E8D5A3;
   font-size:1.3rem;
   text-decoration:none;
-  animation:fadeIn 1s ease both 1.6s, floatA 3s ease-in-out infinite 2.6s;
+  animation:fadeIn 1s ease both 1.8s, floatA 3s ease-in-out infinite 2.8s;
 }
 
 @media(max-width:600px){
@@ -977,54 +1065,33 @@ section .inner{position:relative;z-index:1;}
     ♪ Music
   </button>
 
-  <!-- PHOTO BANNER -->
+<!-- PHOTO BANNER -->
 <section class="photo-banner" id="banner">
-  <img class="pb-img" src="images/banner.jpeg" alt="Jheroll and Jennie">
+  <img class="pb-img" src="images/banner.jpg" alt="Jheroll and Jennie">
   <div class="pb-shade"></div>
 
   <img class="pb-logo" src="images/logo.png" alt="Jheroll &amp; Jennie logo">
 
+  <div class="pb-names-row">
+    <div class="pb-person">
+      <p class="pb-first">Jheroll</p>
+      <p class="pb-last">Porras</p>
+    </div>
+    <div class="pb-person">
+      <p class="pb-first">Jennie</p>
+      <p class="pb-last">Rodriguez</p>
+    </div>
+  </div>
+
   <div class="pb-bottom">
-    <h1 class="pb-names">Jheroll <span>&amp;</span> Jennie</h1>
-    <p class="pb-date">February 6, 2027 · Silang, Cavite</p>
+    <p class="pb-ornament">♦ You are cordially invited ♦</p>
+    <p class="pb-date">Saturday · February 6, 2027 · 09:00 in the morning</p>
+    <p class="pb-tagline">Two hearts, one forever</p>
     <a class="pb-scroll" href="#top" aria-label="Scroll down">↓</a>
   </div>
 </section>
 
-  <!-- HERO -->
-  <section class="hero" id="top">
-    
-    <svg class="parol parol-a" style="left:3%;top:38%;width:220px;height:220px;opacity:0.07" viewBox="0 0 100 100">
-      <g fill="#C9A84C">
-        <ellipse cx="50" cy="50" rx="7" ry="33"/>
-        <ellipse cx="50" cy="50" rx="7" ry="33" transform="rotate(45 50 50)"/>
-        <ellipse cx="50" cy="50" rx="7" ry="33" transform="rotate(90 50 50)"/>
-        <ellipse cx="50" cy="50" rx="7" ry="33" transform="rotate(135 50 50)"/>
-        <circle cx="50" cy="50" r="7"/>
-      </g>
-    </svg>
-    <svg class="parol parol-b" style="right:5%;bottom:15%;width:280px;height:280px;opacity:0.05" viewBox="0 0 100 100">
-      <g fill="#C9A84C">
-        <ellipse cx="50" cy="50" rx="7" ry="33"/>
-        <ellipse cx="50" cy="50" rx="7" ry="33" transform="rotate(45 50 50)"/>
-        <ellipse cx="50" cy="50" rx="7" ry="33" transform="rotate(90 50 50)"/>
-        <ellipse cx="50" cy="50" rx="7" ry="33" transform="rotate(135 50 50)"/>
-        <circle cx="50" cy="50" r="7"/>
-      </g>
-    </svg>
-    <div class="hero-inner">
-      <p class="hero-ornament">♦ You are cordially invited ♦</p>
-      <div class="hero-names">
-        <span>Jheroll</span>
-        <span class="hero-amp">&amp;</span>
-        <span>Jennie</span>
-      </div>
-      <div class="hero-divider"></div>
-      <p class="hero-date">Saturday · February 6, 2027 · 09:00 in the morning</p>
-      <p class="hero-tagline">Two hearts, one forever</p>
-      <img class="hero-logo" src="images/logo.png" alt="Jheroll &amp; Jennie logo">
-    </div>
-  </section>
+
 
   <!-- OUR STORY -->
   <section id="our-story" style="background:#F0E8E0;">
