@@ -2374,24 +2374,17 @@ const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lightbox-img');
 const lbNav = lb.querySelectorAll('.lightbox-prev, .lightbox-next, .lightbox-counter');
 
+// "How we met" photos: open without arrows
 document.querySelectorAll('.zoomable').forEach(frame => {
   frame.addEventListener('click', () => {
     const img = frame.querySelector('img');
     lbImg.src = img.src;
     lbImg.alt = img.alt;
-    lbNav.forEach(el => el.style.display = 'none');   // hide arrows for timeline photos
+    lbNav.forEach(el => el.style.display = 'none');
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
   });
 });
-
-  function closeLightbox(){
-    lb.classList.remove('open');
-    lb.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-  lb.addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 </script>
 
