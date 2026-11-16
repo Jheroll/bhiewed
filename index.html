@@ -872,17 +872,11 @@ section .inner{position:relative;z-index:1;}
 
 /* Names on the left and right of the couple */
 .pb-names-row{
-  position:absolute;
-  top:clamp(150px, 32vh, 330px);     /* was 22vh, lower = closer to the bottom text */
-  left:0;
-  right:0;
-  z-index:2;
   display:flex;
-  justify-content:center;            /* was space-between */
+  justify-content:center;
   align-items:flex-start;
-  gap:clamp(9rem, 26vw, 32rem);      /* the space left for the couple */
-  padding:0 1rem;
-  pointer-events:none;
+  gap:clamp(2rem, 9vw, 7rem);
+  margin-bottom:1.6rem;
 }
 .pb-person{
   animation:fadeUp 1.1s ease both;
@@ -1081,7 +1075,10 @@ section .inner{position:relative;z-index:1;}
 
   <img class="pb-logo" src="images/logo.png" alt="Jheroll &amp; Jennie logo">
 
-  <div class="pb-names-row">
+
+
+  <div class="pb-bottom">
+      <div class="pb-names-row">
     <div class="pb-person">
       <p class="pb-first">Jheroll</p>
       <p class="pb-last">Porras</p>
@@ -1091,8 +1088,6 @@ section .inner{position:relative;z-index:1;}
       <p class="pb-last">Rodriguez</p>
     </div>
   </div>
-
-  <div class="pb-bottom">
     <p class="pb-ornament">♦ You are cordially invited ♦</p>
     <p class="pb-date">Saturday · February 6, 2027 · 09:00 in the morning</p>
     <p class="pb-tagline">Two hearts, one forever</p>
