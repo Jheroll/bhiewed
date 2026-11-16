@@ -197,6 +197,7 @@ footer{background:#3D0C11;color:#E8B4BB;text-align:center;padding:3rem 2rem;}
   .ent-photo{gap:1rem;}
  .ent-photo img{width:120px;}
  .ent-photo figcaption{font-size:1rem;}
+  .outfit-line{font-size:0.95rem;}
 }
 
 /* ════════════════════════════
@@ -617,15 +618,42 @@ section .inner{position:relative;z-index:1;}
   box-shadow:none;
   filter:drop-shadow(0 8px 12px rgba(123,30,52,0.18));
 }
-.ent-photo figcaption{
+
+
+  .ent-photo figcaption{
   flex:1;
   max-width:280px;
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
   font-family:'Cormorant Garamond',serif;
   font-style:italic;
   font-size:1.15rem;
   color:#9A6B75;
-  margin-top:0;
   line-height:1.6;
+}
+
+  .outfit-title{
+  font-family:'Josefin Sans',sans-serif;
+  font-style:normal;
+  font-size:0.65rem;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:#C9A84C;
+  padding-bottom:0.6rem;
+  border-bottom:1px solid rgba(201,168,76,0.4);
+  margin-bottom:0.2rem;
+}
+.outfit-line{
+  font-family:'Cormorant Garamond',serif;
+  font-style:normal;
+  font-size:1.1rem;
+  color:#5C1523;
+  line-height:1.4;
+}
+.outfit-line strong{
+  font-weight:600;
+  color:#7D1D30;
 }
 
   
@@ -1023,9 +1051,13 @@ section .inner{position:relative;z-index:1;}
       
       </div>
 
-  <figure class="ent-photo">
-  <img src="images/ninong_ninang.png" alt="Our Ninongs and Ninangs" loading="lazy">
-  <figcaption>Our Ninongs &amp; Ninangs, with love and gratitude</figcaption>
+ <figure class="ent-photo">
+  <img src="images/ninong_ninang.png" alt="Principal Sponsors outfit" loading="lazy">
+  <figcaption>
+    <span class="outfit-title">Principal Sponsors Outfit</span>
+    <span class="outfit-line"><strong>Ninong:</strong> Barong Tagalog &amp; slacks</span>
+    <span class="outfit-line"><strong>Ninang:</strong> Filipiniana gown</span>
+  </figcaption>
 </figure>
       <p class="outfit-note">Guests are encouraged to wear warm earth tones, champagne, dusty rose, or Filipino formal attire.</p>
     </div>
