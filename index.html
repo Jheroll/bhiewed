@@ -874,9 +874,18 @@ section .inner{position:relative;z-index:1;}
 .pb-names-row{
   display:flex;
   justify-content:center;
-  align-items:flex-start;
-  gap:clamp(2rem, 9vw, 7rem);
+  align-items:baseline;            /* keeps the & level with the first names */
+  gap:clamp(0.8rem, 3.5vw, 2.5rem);
   margin-bottom:1.6rem;
+}
+.pb-amp{
+  font-family:'Pinyon Script',cursive;
+  font-size:clamp(2.4rem, 7vw, 5.5rem);
+  line-height:1;
+  color:#E8D5A3;
+  text-shadow:0 2px 16px rgba(0,0,0,0.45);
+  animation:fadeUp 1.1s ease both;
+  animation-delay:0.9s;
 }
 .pb-person{
   animation:fadeUp 1.1s ease both;
@@ -1078,21 +1087,20 @@ section .inner{position:relative;z-index:1;}
 
 
   <div class="pb-bottom">
-      <div class="pb-names-row">
-    <div class="pb-person">
-      <p class="pb-first">Jheroll</p>
-      <p class="pb-last">Porras</p>
-    </div>
-         <div class="pb-person">
- 
-      <p class="pb-last">&</p>
-    </div>
-    <div class="pb-person">
-      <p class="pb-first">Jennie</p>
-      <p class="pb-last">Rodriguez</p>
-    </div>
+<div class="pb-names-row">
+  <div class="pb-person">
+    <p class="pb-first">Jheroll</p>
+    <p class="pb-last">Porras</p>
   </div>
-    <p class="pb-ornament">♦ You are cordially invited ♦</p>
+
+  <span class="pb-amp">&amp;</span>
+
+  <div class="pb-person">
+    <p class="pb-first">Jennie</p>
+    <p class="pb-last">Rodriguez</p>
+  </div>
+</div>
+    <p class="pb-ornament">♦ cordially invite you to celebrate their wedding ♦</p>
     <p class="pb-date">Saturday · February 6, 2027 · 09:00 in the morning</p>
     <p class="pb-tagline">Two hearts, one forever</p>
     <a class="pb-scroll" href="#top" aria-label="Scroll down">↓</a>
