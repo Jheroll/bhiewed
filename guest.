@@ -649,6 +649,7 @@ section .inner{position:relative;z-index:1;}
 }
 .guest-photo img{
   width:100%;
+  max-width:100%;
   height:auto;
   display:block;
   filter:drop-shadow(0 8px 12px rgba(123,30,52,0.15));
@@ -669,8 +670,6 @@ section .inner{position:relative;z-index:1;}
   font-family:'Cormorant Garamond',serif;
   font-style:italic;
   font-size:clamp(0.95rem, 3.2vw, 1.1rem);
-  letter-spacing:0.02em;
-  text-transform:none;
   color:#9A6B75;
   line-height:1.5;
 }
@@ -1077,13 +1076,13 @@ section .inner{position:relative;z-index:1;}
       </figcaption>
     </figure>
 
-    <figure class="guest-photo">
-      <img src="images/guest.png" alt="Guest outfit inspiration" loading="lazy">
-      <figcaption>
-        <span class="guest-msg">We kindly request our guests to wear formal attire.</span>
-        <span class="guest-hues">In hues of the Outfit Color Palette mentioned above.</span>
-      </figcaption>
-   </figure>
+<figure class="guest-photo">
+  <img src="images/guest.png" alt="Guest outfit inspiration" loading="lazy">
+  <figcaption>
+    <span class="guest-msg">We kindly request our guests to wear formal attire.</span>
+    <span class="guest-hues">In hues of the Outfit Color Palette mentioned above.</span>
+  </figcaption>
+</figure>
 
 
       <p class="outfit-note">Guests are encouraged to wear warm earth tones, champagne, dusty rose, or Filipino formal attire.</p>
