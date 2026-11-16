@@ -1598,20 +1598,7 @@ section .inner{position:relative;z-index:1;}
 
 <script>
 
-   const bgm = document.getElementById('bgm');
-  bgm.volume = 0.5;
-
-  // Try to play right away
-  bgm.play().catch(() => {
-    // Browsers block sound until the visitor interacts,
-    // so start on the first tap, click, scroll, or key press.
-    const events = ['click','touchstart','scroll','keydown'];
-    const start = () => {
-      bgm.play();
-      events.forEach(e => window.removeEventListener(e, start));
-    };
-    events.forEach(e => window.addEventListener(e, start, {passive:true}));
-  });
+ 
 // ── PRENUP LIGHTBOX ──
 let lightboxIndex = 0;
 let lightboxSrcs  = [];
@@ -2174,6 +2161,23 @@ document.addEventListener('DOMContentLoaded', () => {
   startFlora();
 });
 
+    const bgm = document.getElementById('bgm');
+  bgm.volume = 0.5;
+
+  const events = ['pointerdown','touchend','click','keydown'];
+
+  function removeListeners(){
+    events.forEach(e => window.removeEventListener(e, unlock));
+  }
+
+  function unlock(){
+    bgm.play().then(removeListeners).catch(() => {});
+  }
+
+  // Try autoplay first; if blocked, wait for the first real tap or click
+  bgm.play().catch(() => {
+    events.forEach(e => window.addEventListener(e, unlock));
+  });
 
   const s = new URLSearchParams(location.search).get('seats');
   if (s) document.querySelector('.seat-blank').textContent = s;
