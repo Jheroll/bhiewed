@@ -318,6 +318,36 @@ section:hover .sec-div{animation:shimmer 1.5s ease infinite;}
 /* Section label fade */
 .sec-label{animation:none;}
 
+  /* CSS-drawn diamonds, same on every browser */
+.sec-label,
+.hero-ornament,
+.pb-ornament{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:0.9em;
+}
+.sec-label::before,.sec-label::after,
+.hero-ornament::before,.hero-ornament::after,
+.pb-ornament::before,.pb-ornament::after{
+  content:'';
+  width:0.5em;
+  height:0.5em;
+  background:currentColor;       /* uses the gold text color */
+  transform:rotate(45deg);
+  flex-shrink:0;
+}
+
+/* the diamond in the venue divider */
+.venue-divider-diamond{
+  display:block;
+  width:7px;
+  height:7px;
+  background:#C9A84C;
+  transform:rotate(45deg);
+  font-size:0;                   /* hides any leftover character */
+}
+
 /* Footer names glow */
 @keyframes gentleGlow{0%,100%{text-shadow:none;}50%{text-shadow:0 0 20px rgba(201,168,76,0.3);}}
 .footer-names{animation:gentleGlow 4s ease-in-out infinite;}
@@ -1100,10 +1130,10 @@ section .inner{position:relative;z-index:1;}
     <p class="pb-last">Rodriguez</p>
   </div>
 </div>
-    <p class="pb-ornament">♦ cordially invite you to celebrate their wedding ♦</p>
+    <p class="pb-ornament"> cordially invite you to celebrate their wedding </p>
     <p class="pb-date">Saturday · February 6, 2027 · 09:00 in the morning</p>
     <p class="pb-tagline">Two hearts, one forever</p>
-    <a class="pb-scroll" href="#top" aria-label="Scroll down">↓</a>
+   
   </div>
 </section>
 
@@ -1127,7 +1157,7 @@ section .inner{position:relative;z-index:1;}
       </svg>
     </div>
     <div class="inner">
-      <p class="sec-label reveal">♦ Our Love Story ♦</p>
+      <p class="sec-label reveal"> Our Love Story </p>
       <h2 class="sec-title reveal">How It All Began</h2>
       <div class="sec-div reveal"></div>
       <div class="timeline stagger">
@@ -1236,7 +1266,7 @@ section .inner{position:relative;z-index:1;}
       </svg>
     </div>
     <div class="inner">
-      <p class="sec-label reveal" style="color:#C9A84C;">♦ Venue ♦</p>
+      <p class="sec-label reveal" style="color:#C9A84C;"> Venue </p>
       <h2 class="sec-title reveal" style="color:#E8D5A3;">Where We Say I Do</h2>
       <div class="sec-div reveal"></div>
       <div class="venue-hero reveal">
@@ -1247,7 +1277,7 @@ section .inner{position:relative;z-index:1;}
         <div class="venue-hero-content">
           <div class="venue-divider">
             <div class="venue-divider-line"></div>
-            <span class="venue-divider-diamond">♦</span>
+            <span class="venue-divider-diamond"></span>
             <div class="venue-divider-line"></div>
           </div>
           <p class="venue-name">Chateaux De Paris</p>
@@ -1280,7 +1310,7 @@ section .inner{position:relative;z-index:1;}
       </svg>
     </div>
     <div class="inner">
-      <p class="sec-label reveal">♦ Dress Guide ♦</p>
+      <p class="sec-label reveal"> Dress Guide </p>
       <h2 class="sec-title reveal">Outfit Color Palette</h2>
       <div class="sec-div reveal"></div>
       <div class="outfit-grid stagger">
@@ -1349,7 +1379,7 @@ section .inner{position:relative;z-index:1;}
       </svg>
     </div>
     <div class="inner">
-      <p class="sec-label reveal">♦ Music ♦</p>
+      <p class="sec-label reveal"> Music </p>
       <h2 class="sec-title reveal">Our Wedding Playlist</h2>
       <div class="sec-div reveal"></div>
       <div class="reveal" style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
@@ -1407,7 +1437,7 @@ section .inner{position:relative;z-index:1;}
   <!-- PRENUP PHOTOS -->
   <section id="prenup" style="background:#3D0C11;padding:5rem 2rem;">
     <div class="inner" style="max-width:1100px;">
-      <p class="sec-label" style="color:#C9A84C;">♦ Prenuptial Session ♦</p>
+      <p class="sec-label" style="color:#C9A84C;"> Prenuptial Session </p>
       <h2 class="sec-title reveal" style="color:#E8D5A3;">Before Forever</h2>
       <div class="sec-div reveal"></div>
       <p style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#E8B4BB;margin-bottom:2.5rem;" class="reveal">A glimpse of our love story, captured in light.</p>
@@ -1533,7 +1563,7 @@ section .inner{position:relative;z-index:1;}
     </div>
 
     <div class="inner">
-      <p class="sec-label reveal">♦ The Wedding Party ♦</p>
+      <p class="sec-label reveal"> The Wedding Party </p>
       <h2 class="sec-title reveal">Our Beloved Entourage</h2>
       <div class="sec-div reveal"></div>
 
@@ -1683,7 +1713,7 @@ section .inner{position:relative;z-index:1;}
   <footer>
     <p class="footer-names">Jheroll & Jennie</p>
     <p class="footer-date">February 6, 2027 · Silang, Cavite</p>
-    <p class="footer-love">Made with love ♦</p>
+    <p class="footer-love">Made with love </p>
   </footer>
 
 </div><!-- end page-home -->
@@ -1698,7 +1728,7 @@ section .inner{position:relative;z-index:1;}
   </nav>
   <div class="rsvp-page">
     <div class="rsvp-top">
-      <p class="sec-label">♦ Kindly Reply ♦</p>
+      <p class="sec-label"> Kindly Reply </p>
       <p class="rsvp-names">Jheroll <span class="rsvp-amp">&</span> Jennie</p>
       <div class="sec-div"></div>
       <p class="rsvp-subtitle">Saturday · February 6, 2027 · Silang, Cavite</p>
