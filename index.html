@@ -2170,19 +2170,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const s = new URLSearchParams(location.search).get('seats');
   if (s) document.querySelector('.seat-blank').textContent = s;
 
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lightbox-img');
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lightbox-img');
+const lbNav = lb.querySelectorAll('.lightbox-prev, .lightbox-next, .lightbox-counter');
 
-  document.querySelectorAll('.zoomable').forEach(frame => {
-    frame.addEventListener('click', () => {
-      const img = frame.querySelector('img');
-      lbImg.src = img.src;
-      lbImg.alt = img.alt;
-      lb.classList.add('open');
-      lb.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    });
+document.querySelectorAll('.zoomable').forEach(frame => {
+  frame.addEventListener('click', () => {
+    const img = frame.querySelector('img');
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbNav.forEach(el => el.style.display = 'none');   // hide arrows for timeline photos
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
   });
+});
 
   function closeLightbox(){
     lb.classList.remove('open');
