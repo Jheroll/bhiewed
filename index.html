@@ -195,7 +195,8 @@ footer{background:#3D0C11;color:#E8B4BB;text-align:center;padding:3rem 2rem;}
   .ent-names{gap:0.4rem 0.8rem;margin-bottom:0.7rem;}
   .ent-name{font-size:1rem;}
    .nav{display:none;}
-  .photo-banner{padding-top:1.5rem;}   /* nav is hidden on phones, so it can go higher */
+    .photo-banner{padding-top:0.6rem !important;}   /* phone: nav is hidden, so go right to the top */
+  .pb-logo{width:clamp(60px, 16vw, 80px);}
 }
 
 /* ════════════════════════════
@@ -997,6 +998,14 @@ padding-top:68px;            /* was 84px, moves the logo up */
 }
 
   a.nav-brand{text-decoration:none;}
+
+  /* ── BANNER LOGO: higher + softer (keep this LAST in <style>) ── */
+.pb-logo{
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.4)) opacity(0.5) !important;   /* was 0.7, lower = more faded */
+}
+.photo-banner{
+  padding-top:68px !important;       /* desktop: just under the 60px nav */
+}
   
 </style>
 </head>
