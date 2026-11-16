@@ -1601,6 +1601,7 @@ function openLightbox(index) {
   lightboxIndex = index;
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox-counter').textContent = (index + 1) + ' of ' + lightboxSrcs.filter(s=>s.src).length;
+  document.querySelectorAll('#lightbox .lightbox-prev, #lightbox .lightbox-next, #lightbox-counter').forEach(el => el.style.display = '');
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
