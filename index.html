@@ -2163,20 +2163,29 @@ document.addEventListener('DOMContentLoaded', () => {
   startFlora();
 });
 
-    const bgm = document.getElementById('bgm');
+  const bgm = document.getElementById('bgm');
+  const START = 20;          // seconds to skip, change as needed
   bgm.volume = 0.5;
 
-  const events = ['pointerdown','touchend','click','keydown'];
+  function seekStart(){ bgm.currentTime = START; }
 
+  // Set the start point once the file info has loaded
+  if (bgm.readyState >= 1) seekStart();
+  else bgm.addEventListener('loadedmetadata', seekStart, {once:true});
+
+  // Manual loop: when the song ends, go back to START instead of 0
+  bgm.addEventListener('ended', () => {
+    seekStart();
+    bgm.play();
+  });
+
+  const events = ['pointerdown','touchend','click','keydown'];
   function removeListeners(){
     events.forEach(e => window.removeEventListener(e, unlock));
   }
-
   function unlock(){
     bgm.play().then(removeListeners).catch(() => {});
   }
-
-  // Try autoplay first; if blocked, wait for the first real tap or click
   bgm.play().catch(() => {
     events.forEach(e => window.addEventListener(e, unlock));
   });
