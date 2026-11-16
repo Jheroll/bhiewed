@@ -823,7 +823,7 @@ section .inner{position:relative;z-index:1;}
   position:relative;
   min-height:100vh;
   min-height:100svh;
-  padding:84px 1.5rem 2.5rem;
+padding-top:68px;            /* was 84px, moves the logo up */
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -850,11 +850,12 @@ section .inner{position:relative;z-index:1;}
   background:linear-gradient(to bottom, rgba(30,5,8,0.5) 0%, rgba(30,5,8,0.15) 40%, rgba(30,5,8,0.78) 100%);
 }
 .pb-logo{
+.pb-logo{
   position:relative;
   z-index:2;
   width:clamp(70px, 11vw, 110px);
   height:auto;
-  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.4)) opacity(0.7);   /* 0.7 = softer */
   animation:fadeDown 1s ease both;
   animation-delay:0.4s;
 }
