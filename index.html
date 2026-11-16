@@ -643,18 +643,16 @@ section .inner{position:relative;z-index:1;}
 }
 
 .guest-photo{
-  width:100%;
-  max-width:520px;
+  width:clamp(270px, 72vw, 675px);   /* 2.25 × the couple image width */
+  max-width:100%;
   margin:1.8rem auto 0;
-  padding:0 1rem;
+  padding:0;
   text-align:center;
 }
 .guest-photo img{
   width:100%;
-  max-width:100%;
   height:auto;
   display:block;
-  margin:0 auto;
   filter:drop-shadow(0 8px 12px rgba(123,30,52,0.15));
 }
 .guest-photo figcaption{
