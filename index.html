@@ -931,8 +931,9 @@ section .inner{position:relative;z-index:1;}
       <div class="t-center"><div class="t-dot"></div></div>
       <div class="t-photo">
         <div class="t-photo-frame zoomable">
-          <img src="images/journey1.jpeg" alt="How we met" loading="lazy">
+          <img src="images/how-we-met.jpg" alt="How we met" loading="lazy">
           <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+          <span class="zoom-hint">⤢</span>
         </div>
       </div>
     </div>
@@ -1591,7 +1592,10 @@ section .inner{position:relative;z-index:1;}
 
   </div>
 </div><!-- end page-dashboard -->
-
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+  <button class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
 
 <script>
 
@@ -2188,7 +2192,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const s = new URLSearchParams(location.search).get('seats');
   if (s) document.querySelector('.seat-blank').textContent = s;
 
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+
+  document.querySelectorAll('.zoomable').forEach(frame => {
+    frame.addEventListener('click', () => {
+      const img = frame.querySelector('img');
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeLightbox(){
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  lb.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
 </script>
+
+
 
 </body>
 </html>
