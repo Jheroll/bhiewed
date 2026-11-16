@@ -729,7 +729,7 @@ section .inner{position:relative;z-index:1;}
 </style>
 </head>
 <body>
-
+<audio id="bgm" src="music/song.mp3" loop preload="auto"></audio>
 <!-- ════════════════════════════════════
      PAGE 1: WEDDING WEBSITE
 ═════════════════════════════════════ -->
@@ -1597,6 +1597,21 @@ section .inner{position:relative;z-index:1;}
 
 
 <script>
+
+   const bgm = document.getElementById('bgm');
+  bgm.volume = 0.5;
+
+  // Try to play right away
+  bgm.play().catch(() => {
+    // Browsers block sound until the visitor interacts,
+    // so start on the first tap, click, scroll, or key press.
+    const events = ['click','touchstart','scroll','keydown'];
+    const start = () => {
+      bgm.play();
+      events.forEach(e => window.removeEventListener(e, start));
+    };
+    events.forEach(e => window.addEventListener(e, start, {passive:true}));
+  });
 // ── PRENUP LIGHTBOX ──
 let lightboxIndex = 0;
 let lightboxSrcs  = [];
