@@ -980,22 +980,16 @@ section .inner{position:relative;z-index:1;}
 
         <!-- 3. The journey -->
         <div class="t-item">
-          <div class="t-content">
-            <p class="t-year">The journey</p>
-            <p class="t-text">Through every season — the laughter, the adventures, the quiet evenings — we built something beautiful. Every moment made us <strong>more certain</strong>.</p>
-          </div>
+          <div class="t-photo-frame zoomable">
+          <img src="images/journey2.jpeg" alt="How we met" loading="lazy">
+          <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+          <span class="zoom-hint">⤢</span>
+        </div>
           <div class="t-center"><div class="t-dot"></div></div>
-          <div class="t-photo">
-            <div class="t-photo-frame" onclick="document.getElementById('upload-3').click()">
-              <div class="placeholder">
-                <svg class="placeholder-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                <span class="placeholder-label">Our Journey<br/>Click to add photo</span>
-              </div>
-              <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
-              <div class="upload-hint">↑ Replace with your photo</div>
-            </div>
-            <input id="upload-3" type="file" accept="image/*" style="display:none" onchange="loadPhoto(this,'frame-3')"/>
-          </div>
+           <div class="t-content">
+        <p class="t-year">How we met</p>
+        <p class="t-text">Our story began when a coworker played matchmaker. <strong>She saw it before we did</strong>, and now she's our Ninang.</p>
+      </div>
         </div>
 
         <!-- 4. The proposal -->
