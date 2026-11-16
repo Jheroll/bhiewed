@@ -800,6 +800,7 @@ section .inner{position:relative;z-index:1;}
   background:#2a0d12;
   overflow:hidden;
 }
+  .photo-banner{padding-bottom:4rem;}
 .pb-img{
   position:absolute;
   inset:0;
@@ -872,13 +873,15 @@ section .inner{position:relative;z-index:1;}
 /* Names on the left and right of the couple */
 .pb-names-row{
   position:absolute;
-  top:clamp(120px, 22vh, 220px);
+  top:clamp(150px, 32vh, 330px);     /* was 22vh, lower = closer to the bottom text */
   left:0;
   right:0;
   z-index:2;
   display:flex;
-  justify-content:space-between;
-  padding:0 clamp(1.5rem, 6vw, 6rem);
+  justify-content:center;            /* was space-between */
+  align-items:flex-start;
+  gap:clamp(9rem, 26vw, 32rem);      /* the space left for the couple */
+  padding:0 1rem;
   pointer-events:none;
 }
 .pb-person{
@@ -949,6 +952,12 @@ section .inner{position:relative;z-index:1;}
 
 @media(max-width:600px){
   .pb-names{font-size:clamp(2.6rem, 13vw, 4rem);}
+   .pb-names-row{
+    top:120px;
+    justify-content:space-between;
+    gap:0;
+    padding:0 1rem;
+  }
 }
   
 </style>
