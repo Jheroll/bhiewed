@@ -194,6 +194,9 @@ footer{background:#3D0C11;color:#E8B4BB;text-align:center;padding:3rem 2rem;}
   .rsvp-btn{padding:16px 40px;font-size:15px;}
   .ent-names{gap:0.4rem 0.8rem;margin-bottom:0.7rem;}
   .ent-name{font-size:1rem;}
+  .ent-photo{gap:1rem;}
+ .ent-photo img{width:120px;}
+ .ent-photo figcaption{font-size:1rem;}
 }
 
 /* ════════════════════════════
@@ -594,28 +597,37 @@ section .inner{position:relative;z-index:1;}
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(123, 30, 52, 0.35);
 }
-.ent-photo{
+
+  .ent-photo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:2rem;
+  max-width:560px;
   margin:1.8rem auto 0;
-  max-width:300px;
-  text-align:center;
+  text-align:left;
 }
 .ent-photo img{
-  width:100%;
+  width:180px;              /* was 300px, change to resize */
+  flex-shrink:0;
   height:auto;
   display:block;
   border:none;
   border-radius:0;
   box-shadow:none;
-  filter:drop-shadow(0 10px 14px rgba(123,30,52,0.18));
+  filter:drop-shadow(0 8px 12px rgba(123,30,52,0.18));
 }
 .ent-photo figcaption{
+  flex:1;
+  max-width:280px;
   font-family:'Cormorant Garamond',serif;
   font-style:italic;
-  font-size:1rem;
+  font-size:1.15rem;
   color:#9A6B75;
-  margin-top:0.8rem;
-  line-height:1.5;
+  margin-top:0;
+  line-height:1.6;
 }
+
   
 </style>
 </head>
@@ -1011,10 +1023,10 @@ section .inner{position:relative;z-index:1;}
       
       </div>
 
-      <figure class="ent-photo">
-        <img src="images/ninong_ninang.png" alt="Our Ninongs and Ninangs" loading="lazy">
-        <figcaption>Our Ninongs &amp; Ninangs, with love and gratitude</figcaption>
-      </figure>
+  <figure class="ent-photo">
+  <img src="images/ninong_ninang.png" alt="Our Ninongs and Ninangs" loading="lazy">
+  <figcaption>Our Ninongs &amp; Ninangs, with love and gratitude</figcaption>
+</figure>
       <p class="outfit-note">Guests are encouraged to wear warm earth tones, champagne, dusty rose, or Filipino formal attire.</p>
     </div>
   </section>
