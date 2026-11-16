@@ -774,7 +774,17 @@ section .inner{position:relative;z-index:1;}
   color:#7D1D30;
 }
 
+.hero-tagline{margin-top:0.8rem;}   /* space between the date and the tagline */
 
+.hero-logo{
+  display:block;
+  margin:1.8rem auto 0;
+  width:clamp(90px, 16vw, 140px);
+  height:auto;
+  opacity:0;
+  animation:fadeUp 1s ease both;
+  animation-delay:1.7s;
+}
   
 </style>
 </head>
@@ -921,6 +931,7 @@ section .inner{position:relative;z-index:1;}
       <div class="hero-divider"></div>
       <p class="hero-date">Saturday · February 6, 2027 · 09:00 in the morning</p>
       <p class="hero-tagline">Two hearts, one forever</p>
+      <img class="hero-logo" src="images/logo.png" alt="Jheroll &amp; Jennie logo">
     </div>
   </section>
 
