@@ -1441,90 +1441,42 @@ section .inner{position:relative;z-index:1;}
       <div class="sec-div reveal"></div>
       <p style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#E8B4BB;margin-bottom:2.5rem;" class="reveal">A glimpse of our love story, captured in light.</p>
 
-      <!-- 4 FEATURED PHOTOS -->
-      <div class="prenup-featured reveal">
-        <!-- FEATURE 1 — tall left -->
-        <div class="pf-item" onclick="openLightbox(0)">
-          <!-- Replace src with your photo URL -->
-          <div class="prenup-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Featured Photo 1<br/>Replace with your prenup photo</span>
-          </div>
-          <span class="zoom-hint">View Photo</span>
-        </div>
-        <!-- FEATURE 2 — top right -->
-        <div class="pf-item" onclick="openLightbox(1)">
-          <div class="prenup-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Featured Photo 2<br/>Replace with your prenup photo</span>
-          </div>
-          <span class="zoom-hint">View Photo</span>
-        </div>
-        <!-- FEATURE 3 — bottom right -->
-        <div class="pf-item" onclick="openLightbox(2)">
-          <div class="prenup-placeholder">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Featured Photo 3<br/>Replace with your prenup photo</span>
-          </div>
-          <span class="zoom-hint">View Photo</span>
-        </div>
-      </div>
+    <!-- 3 FEATURED PHOTOS -->
+<div class="prenup-featured reveal">
+  <div class="pf-item" onclick="openLightbox(0)">
+    <img src="images/prenup1.jpeg" alt="Prenup photo 1" loading="lazy">
+    <span class="zoom-hint">View Photo</span>
+  </div>
+  <div class="pf-item" onclick="openLightbox(1)">
+    <img src="images/prenup2.jpeg" alt="Prenup photo 2" loading="lazy">
+    <span class="zoom-hint">View Photo</span>
+  </div>
+  <div class="pf-item" onclick="openLightbox(2)">
+    <img src="images/prenup3.jpeg" alt="Prenup photo 3" loading="lazy">
+    <span class="zoom-hint">View Photo</span>
+  </div>
+</div>
 
-      <!-- ALBUM TOGGLE -->
-      <div class="album-toggle">
-        <button class="album-toggle-btn active" onclick="toggleAlbum(this)">
-          View Full Album
-        </button>
-        <span class="album-count" id="album-count"></span>
-      </div>
+<!-- ALBUM TOGGLE -->
+<div class="album-toggle">
+  <button class="album-toggle-btn active" onclick="toggleAlbum(this)">View Full Album</button>
+  <span class="album-count" id="album-count"></span>
+</div>
 
-      <!-- FULL ALBUM — masonry grid -->
-      <div class="prenup-album reveal" id="prenup-album" style="display:none;">
-        <!-- Add as many photos as you want below — copy/paste the pa-item block -->
-        <!-- ALBUM PHOTO 1 -->
-        <div class="pa-item" onclick="openLightbox(3)">
-          <div class="prenup-placeholder">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Album Photo 1</span>
-          </div><span class="zoom-hint">View</span>
-        </div>
-        <!-- ALBUM PHOTO 2 -->
-        <div class="pa-item" onclick="openLightbox(4)" style="aspect-ratio:4/3;">
-          <div class="prenup-placeholder">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Album Photo 2</span>
-          </div><span class="zoom-hint">View</span>
-        </div>
-        <!-- ALBUM PHOTO 3 -->
-        <div class="pa-item" onclick="openLightbox(5)">
-          <div class="prenup-placeholder">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Album Photo 3</span>
-          </div><span class="zoom-hint">View</span>
-        </div>
-        <!-- ALBUM PHOTO 4 -->
-        <div class="pa-item" onclick="openLightbox(6)" style="aspect-ratio:1/1;">
-          <div class="prenup-placeholder">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Album Photo 4</span>
-          </div><span class="zoom-hint">View</span>
-        </div>
-        <!-- ALBUM PHOTO 5 -->
-        <div class="pa-item" onclick="openLightbox(7)" style="aspect-ratio:4/3;">
-          <div class="prenup-placeholder">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Album Photo 5</span>
-          </div><span class="zoom-hint">View</span>
-        </div>
-        <!-- ALBUM PHOTO 6 -->
-        <div class="pa-item" onclick="openLightbox(8)">
-          <div class="prenup-placeholder">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span>Album Photo 6</span>
-          </div><span class="zoom-hint">View</span>
-        </div>
-        <!-- Add more pa-item blocks here for more photos -->
-      </div>
+<!-- FULL ALBUM (9 more photos) -->
+<div class="prenup-album reveal" id="prenup-album" style="display:none;">
+  <div class="pa-item" onclick="openLightbox(3)"><img src="images/prenup4.jpeg" alt="Prenup photo 4" loading="lazy"><span class="zoom-hint">View</span></div>
+  <div class="pa-item" onclick="openLightbox(4)"><img src="images/prenup5.jpeg" alt="Prenup photo 5" loading="lazy"><span class="zoom-hint">View</span></div>
+  <div class="pa-item" onclick="openLightbox(5)"><img src="images/prenup6.jpeg" alt="Prenup photo 6" loading="lazy"><span class="zoom-hint">View</span></div>
+  <div class="pa-item" onclick="openLightbox(6)"><img src="images/prenup7.jpeg" alt="Prenup photo 7" loading="lazy"><span class="zoom-hint">View</span></div>
+  <div class="pa-item" onclick="openLightbox(7)"><img src="images/prenup8.jpeg" alt="Prenup photo 8" loading="lazy"><span class="zoom-hint">View</span></div>
+  <div class="pa-item" onclick="openLightbox(8)"><img src="images/prenup9.jpeg" alt="Prenup photo 9" loading="lazy"><span class="zoom-hint">View</span></div>
+  <div class="pa-item" onclick="openLightbox(9)"><img src="images/prenup10.jpeg" alt="Prenup photo 10" loading="lazy"><span class="zoom-hint">View</span></div>
+  <div class="pa-item" onclick="openLightbox(10)"><img src="images/prenup11.jpeg" alt="Prenup photo 11" loading="lazy"><span class="zoom-hint">View</span></div>
+  <div class="pa-item" onclick="openLightbox(11)"><img src="images/prenup12.jpeg" alt="Prenup photo 12" loading="lazy"><span class="zoom-hint">View</span></div>
+</div>
+
+     
     </div>
   </section>
 
