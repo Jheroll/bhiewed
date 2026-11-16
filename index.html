@@ -656,6 +656,41 @@ section .inner{position:relative;z-index:1;}
   color:#7D1D30;
 }
 
+  .guest-photo{
+  width:100%;
+  max-width:640px;
+  margin:1.8rem auto 0;
+  padding:0 1rem;
+  text-align:center;
+}
+.guest-photo img{
+  width:100%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 8px 12px rgba(123,30,52,0.15));
+}
+.guest-photo figcaption{
+  display:flex;
+  flex-direction:column;
+  gap:0.4rem;
+  margin-top:1rem;
+}
+.guest-msg{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem, 3.5vw, 1.25rem);
+  color:#5C1523;
+  line-height:1.5;
+}
+.guest-hues{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(0.95rem, 3.2vw, 1.1rem);
+  letter-spacing:0.02em;
+  text-transform:none;
+  color:#9A6B75;
+  line-height:1.5;
+}
+
   
 </style>
 </head>
@@ -1024,16 +1059,6 @@ section .inner{position:relative;z-index:1;}
     </div>
     <div class="inner">
       <p class="sec-label reveal">♦ Dress Guide ♦</p>
-
-       <figure class="ent-photo">
-  <img src="images/ninong_ninang.png" alt="Principal Sponsors outfit" loading="lazy">
-  <figcaption>
-    <span class="outfit-title">Principal Sponsors Outfit</span>
-    <span class="outfit-line"><strong>Ninong:</strong> Barong Tagalog &amp; slacks</span>
-    <span class="outfit-line"><strong>Ninang:</strong> Filipiniana gown</span>
-  </figcaption>
-</figure>
-      
       <h2 class="sec-title reveal">Outfit Color Palette</h2>
       <div class="sec-div reveal"></div>
       <div class="outfit-grid stagger">
@@ -1057,9 +1082,24 @@ section .inner{position:relative;z-index:1;}
           <div class="swatch" style="background:#7D1D30"></div>
          <p class="o-color">Burgundy</p>
         </div>
-       
-      
       </div>
+
+    <figure class="ent-photo">
+      <img src="images/ninong_ninang.png" alt="Principal Sponsors outfit" loading="lazy">
+      <figcaption>
+        <span class="outfit-title">Principal Sponsors Outfit</span>
+        <span class="outfit-line"><strong>Ninong:</strong> Barong Tagalog &amp; slacks</span>
+        <span class="outfit-line"><strong>Ninang:</strong> Filipiniana gown</span>
+      </figcaption>
+    </figure>
+
+    <figure class="guest-photo">
+      <img src="images/guest.png" alt="Guest outfit inspiration" loading="lazy">
+      <figcaption>
+        <span class="guest-msg">We kindly request our guests to wear formal attire.</span>
+        <span class="guest-hues">In hues of the Outfit Color Palette mentioned above.</span>
+      </figcaption>
+   </figure>
 
 
       <p class="outfit-note">Guests are encouraged to wear warm earth tones, champagne, dusty rose, or Filipino formal attire.</p>
