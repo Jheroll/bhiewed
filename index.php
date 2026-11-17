@@ -2011,11 +2011,7 @@ button.rsvp-btn{
         <img src="images/logo.png" alt="Jheroll &amp; Jennie logo" loading="lazy">
       </div>
 
-      <div class="gift-note">
-        <p class="gift-title">— Gift Note —</p>
-        <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
-        <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
-      </div>
+      <p class="sec-label reveal"> The Wedding Party </p>
 
       <div class="rsvp-note">
         <p class="rsvp-seats">We have reserved <span class="seat-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> seat(s) in your honor.</p>
@@ -2069,6 +2065,13 @@ button.rsvp-btn{
   <p class="rp-done-small">You can search again to change your answer before December 13, 2026.</p>
   <button type="button" class="rp-again" id="rp-done-again">Back to search</button>
 </div>
+
+
+    <div class="gift-note">
+        <p class="gift-title">— RSVP —</p>
+        <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
+        <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
+      </div>
 
 
     </div>
