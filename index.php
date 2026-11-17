@@ -1406,9 +1406,13 @@ button.rsvp-btn{
   margin-bottom:0.5rem;
 }
 
-    /* ── GIFT NOTE (centered) ── */
+ /* ── GIFT NOTE (centered, larger) ── */
+#gift-note .sec-label{
+  font-size:clamp(0.95rem, 3vw, 1.3rem);   /* was 0.62rem */
+  letter-spacing:0.3em;
+}
 .gift-body{
-  max-width:560px;
+  max-width:640px;
   margin:0 auto;
   padding:0 1.2rem;
   text-align:center;
@@ -1416,10 +1420,10 @@ button.rsvp-btn{
 .gift-body p{
   font-family:'Cormorant Garamond',serif;
   font-style:italic;
-  font-size:clamp(1.05rem, 3.4vw, 1.3rem);
+  font-size:clamp(1.3rem, 4.2vw, 1.75rem);
   color:#5C1523;
-  line-height:1.8;
-  margin:0 0 1rem;
+  line-height:1.75;
+  margin:0 0 1.2rem;
 }
 .gift-body strong{
   font-style:normal;
@@ -2158,7 +2162,7 @@ button.rsvp-btn{
       </svg>
     </div>
 
-        <div class="inner">
+            <div class="inner">
       <p class="sec-label reveal"> Gift Note </p>
       <div class="sec-div reveal"></div>
 
