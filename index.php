@@ -2041,12 +2041,6 @@ button.rsvp-btn{
   <p class="rf-hint" id="rf-hint" role="alert" hidden></p>
 </form>
 
-<div class="rsvp-wrap" id="rsvp-find-btn">
-  <button type="submit" form="rsvp-search" class="rsvp-btn">
-    Find your Invitation ♥
-  </button>
-</div>
-
 <!-- YOUR GROUP: appears after a name is chosen -->
 <div class="rsvp-panel" id="rsvp-panel" hidden>
   <p class="rp-title">Will You Be Joining Us?</p>
