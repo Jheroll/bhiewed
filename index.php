@@ -1,42 +1,81 @@
 <?php
 declare(strict_types=1);
 
-// LOCAL TESTING: __DIR__ . '/data/guests.txt'     EC2 SERVER: '/var/lib/rsvp_data/guests.txt'
-const GUESTS_FILE = __DIR__ . '/data/guests.txt';
+// ── settings ────────────────────────────────────────────
+// LOCAL TESTING: DATA_DIR = __DIR__ . '/data'      EC2 SERVER: '/var/lib/rsvp_data'
+const DATA_DIR    = __DIR__ . '/data';
+const GUESTS_FILE = DATA_DIR . '/guests.txt';
+const RESP_FILE   = DATA_DIR . '/responses.txt';
+const DEADLINE    = '2026-12-13 23:59:59';
 const MAX_RESULTS = 5;
 
+date_default_timezone_set('Asia/Manila');
+session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS'])]);
+session_start();
+$_SESSION['csrf'] = $_SESSION['csrf'] ?? bin2hex(random_bytes(16));
+
+// ── helpers ─────────────────────────────────────────────
 function norm(string $s): string {
     $s = mb_strtolower($s, 'UTF-8');
     $s = preg_replace('/[^a-z0-9 ]/u', '', $s) ?? '';
     return trim(preg_replace('/\s+/', ' ', $s) ?? '');
 }
 
-// live search: index.php?suggest=mar  →  JSON with the matching invitations only
-if (isset($_GET['suggest'])) {
+function json_out(array $data, int $code = 200) {
+    http_response_code($code);
     header('Content-Type: application/json; charset=utf-8');
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
-    $q = norm((string)$_GET['suggest']);
-    $words = array_slice(array_values(array_filter(explode(' ', $q), fn($w) => mb_strlen($w) >= 2)), 0, 4);
-    if (mb_strlen($q) < 3 || !$words || !is_file(GUESTS_FILE)) {
-        echo json_encode(['parties' => []]);
-        exit;
-    }
-
+// guests.txt: one "party,name" per line  →  [party => [name, name, ...]]
+function read_guests(): array {
     $parties = [];
+    if (!is_file(GUESTS_FILE)) return $parties;
     $fh = fopen(GUESTS_FILE, 'r');
+    if (!$fh) return $parties;
+    flock($fh, LOCK_SH);
     while (($r = fgetcsv($fh, 0, ',', '"', '')) !== false) {
         if ($r === [null] || count($r) < 2) continue;
         $party = trim((string)preg_replace('/^\xEF\xBB\xBF/', '', (string)$r[0]));
         $name  = trim((string)$r[1]);
         if ($name === '' || strtolower($party) === 'party') continue;
+        if (!preg_match('/^[A-Za-z0-9_-]{1,20}$/', $party)) continue;
         $parties[$party][] = $name;
     }
+    flock($fh, LOCK_UN);
     fclose($fh);
+    return $parties;
+}
+
+// responses.txt: time,party,name,answer,message   (the latest line for each person wins)
+function read_status(): array {
+    $map = [];
+    if (!is_file(RESP_FILE)) return $map;
+    $fh = fopen(RESP_FILE, 'r');
+    if (!$fh) return $map;
+    flock($fh, LOCK_SH);
+    while (($r = fgetcsv($fh, 0, ',', '"', '')) !== false) {
+        if ($r === [null] || count($r) < 4) continue;
+        $map[$r[1] . '|' . $r[2]] = $r[3];
+    }
+    flock($fh, LOCK_UN);
+    fclose($fh);
+    return $map;
+}
+
+$closed = date('Y-m-d H:i:s') > DEADLINE;
+
+// ── 1. live search:  index.php?suggest=mar ──────────────
+if (isset($_GET['suggest'])) {
+    $q = norm((string)$_GET['suggest']);
+    $words = array_slice(array_values(array_filter(explode(' ', $q), fn($w) => mb_strlen($w) >= 2)), 0, 4);
+    if (mb_strlen($q) < 3 || !$words) json_out(['parties' => []]);
 
     $out = [];
-    foreach ($parties as $p => $names) {
+    foreach (read_guests() as $p => $names) {
         foreach ($names as $name) {
             $n = norm($name);
             $hit = true;
@@ -45,8 +84,57 @@ if (isset($_GET['suggest'])) {
         }
         if (count($out) >= MAX_RESULTS) break;
     }
-    echo json_encode(['parties' => $out], JSON_UNESCAPED_UNICODE);
-    exit;
+    json_out(['parties' => $out]);
+}
+
+// ── 2. open an invitation:  index.php?open=Maria Santos ─
+if (isset($_GET['open'])) {
+    $wanted = norm((string)$_GET['open']);
+    $status = read_status();
+    foreach (read_guests() as $p => $names) {
+        foreach ($names as $name) {
+            if (norm($name) === $wanted) {
+                $_SESSION['party'] = (string)$p;        // remembered on the server: only THIS invitation can be saved
+                $members = [];
+                foreach ($names as $n) $members[] = ['name' => $n, 'status' => $status[$p . '|' . $n] ?? ''];
+                json_out(['ok' => true, 'closed' => $closed, 'members' => $members]);
+            }
+        }
+    }
+    json_out(['ok' => false], 404);
+}
+
+// ── 3. save the answers:  POST index.php?save ───────────
+if (isset($_GET['save'])) {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') json_out(['ok' => false], 405);
+    if (!hash_equals($_SESSION['csrf'], (string)($_SERVER['HTTP_X_CSRF_TOKEN'] ?? ''))) json_out(['ok' => false, 'error' => 'session'], 403);
+    if ($closed) json_out(['ok' => false, 'error' => 'closed'], 403);
+
+    $all   = read_guests();
+    $party = $_SESSION['party'] ?? null;
+    if ($party === null || !isset($all[$party])) json_out(['ok' => false, 'error' => 'no_invitation'], 400);
+
+    $d = json_decode(file_get_contents('php://input', false, null, 0, 20000) ?: '', true);
+    $answers = is_array($d['answers'] ?? null) ? array_values($d['answers']) : [];
+    $names   = $all[$party];
+    if (count($answers) !== count($names)) json_out(['ok' => false, 'error' => 'incomplete'], 400);
+    foreach ($answers as $a) { if ($a !== 'Yes' && $a !== 'No') json_out(['ok' => false, 'error' => 'incomplete'], 400); }
+
+    $message = mb_substr(trim((string)($d['message'] ?? '')), 0, 500);
+    $message = str_replace(["\r", "\n"], ' ', $message);
+    if (preg_match('/^[=+\-@\t]/', $message)) $message = "'" . $message;      // blocks spreadsheet formulas
+
+    $fh = fopen(RESP_FILE, 'a');
+    if (!$fh) { error_log('index.php: cannot open responses file'); json_out(['ok' => false, 'error' => 'server'], 500); }
+    flock($fh, LOCK_EX);
+    $now = date('Y-m-d H:i:s');
+    foreach ($names as $i => $name) {
+        fputcsv($fh, [$now, $party, $name, $answers[$i], $i === 0 ? $message : ''], ',', '"', '');
+    }
+    fflush($fh);
+    flock($fh, LOCK_UN);
+    fclose($fh);
+    json_out(['ok' => true]);
 }
 ?>
 <!DOCTYPE html>
@@ -55,6 +143,7 @@ if (isset($_GET['suggest'])) {
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Jheroll & Jennie · February 6, 2027</title>
+<meta name="csrf-token" content="<?= htmlspecialchars($_SESSION['csrf'], ENT_QUOTES) ?>">  
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Cormorant+Upright:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Josefin+Sans:wght@200;300;400&family=Great+Vibes&family=Pinyon+Script&display=swap" rel="stylesheet"/>
 <style>
 /* ── RESET & BASE ── */
@@ -1156,7 +1245,126 @@ button.rsvp-btn{
   color:#C9A84C;
 }
 .rf-note{padding:0.8rem 1rem;font-style:italic;color:#9A6B75;font-family:'Cormorant Garamond',serif;}
-  
+  /* ── RSVP DROPDOWN ── */
+#rsvp .inner{position:relative;z-index:3;}
+.rf-live{position:relative;}
+.rf-list{
+  position:absolute;
+  top:calc(100% + 0.4rem);
+  left:0; right:0;
+  z-index:20;
+  list-style:none;
+  margin:0; padding:0.3rem;
+  background:#fff;
+  border:1px solid #E8B4BB;
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(125,29,48,0.15);
+  text-align:left;
+}
+.rf-opt{padding:0.8rem 1rem;border-radius:14px;cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:1.15rem;line-height:1.4;color:#5C1523;}
+.rf-opt:hover,.rf-opt[aria-selected="true"]{background:#F5E6E8;}
+.rf-opt strong{color:#7D1D30;font-weight:600;}
+.rf-opt small{display:block;font-family:'Josefin Sans',sans-serif;font-size:0.56rem;letter-spacing:0.15em;text-transform:uppercase;color:#C9A84C;}
+.rf-note{padding:0.8rem 1rem;font-style:italic;color:#9A6B75;font-family:'Cormorant Garamond',serif;}
+
+/* ── YOUR GROUP ── */
+.rsvp-panel{
+  width:100%;
+  max-width:480px;
+  margin:2rem auto 0;
+  padding:0 1.2rem;
+  text-align:left;
+}
+.rp-title{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(1.8rem,5.5vw,2.4rem);
+  line-height:1.15;
+  color:#7D1D30;
+  text-align:center;
+}
+.rp-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.05rem,3.4vw,1.2rem);
+  color:#5C1523;
+  text-align:center;
+  margin:0.5rem 0 1.2rem;
+}
+.rp-member{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:0.8rem 1rem;
+  flex-wrap:wrap;
+  padding:1rem 0;
+  border-bottom:1px solid rgba(201,168,76,0.35);
+}
+.rp-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#5C1523;}
+.rp-toggle{
+  display:inline-flex;
+  padding:3px;
+  background:#FDF6EE;
+  border:1px solid #E8B4BB;
+  border-radius:999px;
+}
+.rp-toggle label{cursor:pointer;}
+.rp-toggle input{position:absolute;opacity:0;pointer-events:none;}
+.rp-toggle span{
+  display:block;
+  padding:0.5rem 1rem;
+  border-radius:999px;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.6rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:#7D1D30;
+  transition:background .2s,color .2s;
+}
+.rp-toggle input[value="Yes"]:checked + span{background:#7D1D30;color:#FDF6EE;}
+.rp-toggle input[value="No"]:checked + span{background:#8A5560;color:#FDF6EE;}
+.rp-toggle input:focus-visible + span{outline:2px solid #C9A84C;outline-offset:1px;}
+.rp-toggle input:disabled + span{opacity:.5;cursor:not-allowed;}
+.rp-label{
+  display:block;
+  margin:1.6rem 0 0.5rem;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.62rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:#9B2335;
+}
+.rsvp-panel textarea{
+  width:100%;
+  padding:0.9rem 1.1rem;
+  background:#FDF6EE;
+  border:1px solid #E8B4BB;
+  border-radius:14px;
+  outline:none;
+  resize:vertical;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem;
+  color:#3D0C11;
+}
+.rsvp-panel textarea:focus{border-color:#C9A84C;box-shadow:0 0 0 3px rgba(201,168,76,0.2);}
+.rp-closed{margin-top:1rem;text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#B3261E;}
+.rp-again{
+  display:block;
+  margin:1.4rem auto 0;
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.1rem;
+  color:#7D1D30;
+  text-decoration:underline;
+}
+.rsvp-panel .rsvp-wrap{margin-top:1.6rem;}
+.rp-done{width:100%;max-width:480px;margin:2rem auto 0;padding:0 1.2rem;text-align:center;}
+.rp-done-title{font-family:'Pinyon Script',cursive;font-size:clamp(2.8rem,10vw,4rem);color:#7D1D30;line-height:1.1;}
+.rp-done p:not(.rp-done-title){font-family:'Cormorant Garamond',serif;font-size:1.2rem;line-height:1.7;color:#5C1523;margin-top:0.6rem;}
+.rp-done .rp-done-small{font-style:italic;font-size:1.05rem;color:#9A6B75;}
+@media(max-width:420px){.rp-toggle{width:100%;}.rp-toggle label{flex:1;}.rp-toggle span{text-align:center;padding:0.6rem 0.4rem;}}
 </style>
 </head>
 <body>
@@ -1821,8 +2029,8 @@ button.rsvp-btn{
         <p class="rsvp-thanks">Thank you, and we look forward to celebrating with you!</p>
       </div>
 
-   <!-- SEARCH BOX -->
-<form class="rsvp-search" id="rsvp-search" action="rsvp.php" method="get" autocomplete="off" novalidate>
+<!-- SEARCH BOX -->
+<form class="rsvp-search" id="rsvp-search" action="#" autocomplete="off" novalidate>
   <div class="rf-row rf-live">
     <input id="rf-input" name="q" type="text" maxlength="60"
            role="combobox" aria-expanded="false" aria-controls="rf-list" aria-autocomplete="list"
@@ -1832,6 +2040,38 @@ button.rsvp-btn{
   </div>
   <p class="rf-hint" id="rf-hint" role="alert" hidden></p>
 </form>
+
+<div class="rsvp-wrap" id="rsvp-find-btn">
+  <button type="submit" form="rsvp-search" class="rsvp-btn">
+    Find your Invitation ♥
+  </button>
+</div>
+
+<!-- YOUR GROUP: appears after a name is chosen -->
+<div class="rsvp-panel" id="rsvp-panel" hidden>
+  <p class="rp-title">Will You Be Joining Us?</p>
+  <p class="rp-sub">Choose for each person on your invitation.</p>
+  <div id="rp-members"></div>
+
+  <label class="rp-label" for="rp-message">Message to the couple (optional)</label>
+  <textarea id="rp-message" rows="3" maxlength="500" placeholder="Share your wishes..."></textarea>
+
+  <p class="rf-hint" id="rp-error" role="alert" hidden></p>
+  <p class="rp-closed" id="rp-closed" hidden>The RSVP deadline has passed. Please contact the couple.</p>
+
+  <div class="rsvp-wrap">
+    <button type="button" class="rsvp-btn" id="rp-confirm">Confirm RSVP ♥</button>
+  </div>
+  <button type="button" class="rp-again" id="rp-again">Not you? Search again</button>
+</div>
+
+<!-- THANK YOU -->
+<div class="rp-done" id="rp-done" hidden>
+  <p class="rp-done-title">Thank You!</p>
+  <p id="rp-done-text"></p>
+  <p class="rp-done-small">You can search again to change your answer before December 13, 2026.</p>
+  <button type="button" class="rp-again" id="rp-done-again">Back to search</button>
+</div>
 
 <div class="rsvp-wrap">
   <button type="submit" form="rsvp-search" class="rsvp-btn">
@@ -1850,61 +2090,7 @@ button.rsvp-btn{
 </div><!-- end page-home -->
 
 
-<!-- ════════════════════════════════════
-     PAGE 2: RSVP FORM
-═════════════════════════════════════ -->
-<div id="page-rsvp" class="page">
-  <nav class="nav">
-    <span class="nav-brand" onclick="showPage('home')" style="cursor:pointer">← Jheroll & Jennie</span>
-  </nav>
-  <div class="rsvp-page">
-    <div class="rsvp-top">
-      <p class="sec-label"> Kindly Reply </p>
-      <p class="rsvp-names">Jheroll <span class="rsvp-amp">&</span> Jennie</p>
-      <div class="sec-div"></div>
-      <p class="rsvp-subtitle">Saturday · February 6, 2027 · Silang, Cavite</p>
-    </div>
-    <div class="rsvp-card">
-      <div id="rsvp-form-wrap">
-        <div class="f-field">
-          <label class="f-label">Full Name *</label>
-          <input class="f-input" id="rsvp-name" placeholder="Your full name"/>
-          <p class="f-error" id="name-err" style="display:none">Please enter your name.</p>
-        </div>
-        <div class="f-field">
-          <label class="f-label">Email Address</label>
-          <input class="f-input" id="rsvp-email" type="email" placeholder="your@email.com (optional)"/>
-        </div>
-        <div class="f-field">
-          <label class="f-label">Will you be joining us?</label>
-          <div class="f-radios">
-            <label class="f-radio"><input type="radio" name="attending" value="yes" checked onchange="toggleGuests(this)"/><span>Joyfully accepts 🎉</span></label>
-            <label class="f-radio"><input type="radio" name="attending" value="no" onchange="toggleGuests(this)"/><span>Regretfully declines</span></label>
-          </div>
-        </div>
-        <div class="f-field guests-field show" id="guests-field">
-          <label class="f-label">Number of Seats</label>
-          <select class="f-select" id="rsvp-guests">
-            <option value="1">1 seat</option>
-            <option value="2">2 seats</option>
-            <option value="3">3 seats</option>
-            <option value="4">4 seats</option>
-          </select>
-        </div>
-        <div class="f-field">
-          <label class="f-label">Message to the Couple</label>
-          <textarea class="f-input" id="rsvp-message" rows="3" placeholder="Share your wishes... (optional)" style="resize:vertical"></textarea>
-        </div>
-        <button class="f-btn" onclick="submitRSVP()">Confirm My RSVP</button>
-      </div>
-      <div id="rsvp-success" class="rsvp-success" style="display:none">
-        <div class="s-icon">💐</div>
-        <p class="s-title" id="success-title">See you there!</p>
-        <p class="s-text" id="success-text"></p>
-      </div>
-    </div>
-  </div>
-</div><!-- end page-rsvp -->
+
 
 
 <!-- ════════════════════════════════════
@@ -1956,16 +2142,26 @@ button.rsvp-btn{
 
 <script>
 
-// ── RSVP dropdown search ──
+// ── RSVP: search, show the group, save ──
 (function () {
   const form  = document.getElementById('rsvp-search');
   if (!form) return;
   const input = document.getElementById('rf-input');
   const list  = document.getElementById('rf-list');
   const hint  = document.getElementById('rf-hint');
-  let timer, ctrl, items = [], active = -1;
+  const findBtn = document.getElementById('rsvp-find-btn');
+  const panel = document.getElementById('rsvp-panel');
+  const rows  = document.getElementById('rp-members');
+  const msg   = document.getElementById('rp-message');
+  const err   = document.getElementById('rp-error');
+  const closedNote = document.getElementById('rp-closed');
+  const confirmBtn = document.getElementById('rp-confirm');
+  const done  = document.getElementById('rp-done');
+  const CSRF  = document.querySelector('meta[name="csrf-token"]').content;
+  let timer, ctrl, items = [], active = -1, memberCount = 0;
 
-  function close(){ list.hidden = true; input.setAttribute('aria-expanded', 'false'); items = []; active = -1; }
+  function say(el, text){ el.textContent = text; el.hidden = !text; }
+  function closeList(){ list.hidden = true; input.setAttribute('aria-expanded', 'false'); items = []; active = -1; }
   function note(t){ list.innerHTML = ''; items = []; const li = document.createElement('li'); li.className = 'rf-note'; li.textContent = t; list.appendChild(li); list.hidden = false; }
 
   function mark(parent, text, q){
@@ -1977,7 +2173,11 @@ button.rsvp-btn{
     parent.append(b, text.slice(i + q.length));
   }
 
-  function go(name){ window.location.href = 'rsvp.php?q=' + encodeURIComponent(name); }
+  async function suggest(q, signal){
+    const res = await fetch('?suggest=' + encodeURIComponent(q), { signal });
+    if (!res.ok) throw new Error('bad response');
+    return (await res.json()).parties || [];
+  }
 
   function render(parties, q){
     list.innerHTML = ''; items = []; active = -1;
@@ -1989,7 +2189,7 @@ button.rsvp-btn{
       const s = document.createElement('small');
       s.textContent = p.names.length + (p.names.length === 1 ? ' seat' : ' seats') + ' reserved';
       li.appendChild(s);
-      li.addEventListener('mousedown', e => { e.preventDefault(); go(p.match); });
+      li.addEventListener('mousedown', e => { e.preventDefault(); openParty(p.match); });
       list.appendChild(li); items.push(li);
     });
     list.hidden = false;
@@ -2002,18 +2202,68 @@ button.rsvp-btn{
     if (i >= 0) input.setAttribute('aria-activedescendant', items[i].id);
   }
 
+  // ── show the group with a toggle for each person ──
+  function buildPanel(data){
+    rows.innerHTML = '';
+    memberCount = data.members.length;
+    data.members.forEach((m, i) => {
+      const row = document.createElement('div'); row.className = 'rp-member';
+      const name = document.createElement('span'); name.className = 'rp-name'; name.textContent = m.name;
+      const tog = document.createElement('div'); tog.className = 'rp-toggle'; tog.setAttribute('role', 'radiogroup'); tog.setAttribute('aria-label', m.name);
+      [['Yes', 'Attending'], ['No', 'Not attending']].forEach(([val, label]) => {
+        const l = document.createElement('label');
+        const r = document.createElement('input');
+        r.type = 'radio'; r.name = 'rp-ans-' + i; r.value = val;
+        r.checked = (m.status === val); r.disabled = !!data.closed;
+        const s = document.createElement('span'); s.textContent = label;
+        l.append(r, s); tog.appendChild(l);
+      });
+      row.append(name, tog); rows.appendChild(row);
+    });
+    msg.value = '';
+    say(err, '');
+    closedNote.hidden = !data.closed;
+    confirmBtn.parentElement.hidden = !!data.closed;
+    msg.disabled = !!data.closed;
+    const blank = document.querySelector('.seat-blank');
+    if (blank) blank.textContent = memberCount;                // fills "We have reserved __ seat(s)"
+    findBtn.hidden = true;
+    done.hidden = true;
+    panel.hidden = false;
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  async function openParty(name){
+    closeList();
+    say(hint, '');
+    try {
+      const res = await fetch('?open=' + encodeURIComponent(name));
+      const data = await res.json();
+      if (!data.ok) throw new Error('not found');
+      input.value = name;
+      buildPanel(data);
+    } catch (e) {
+      say(hint, 'We couldn’t open that invitation. Please try again.');
+    }
+  }
+
+  function resetToSearch(clear){
+    panel.hidden = true; done.hidden = true; findBtn.hidden = false;
+    closeList(); say(err, ''); say(hint, '');
+    if (clear) { input.value = ''; input.focus(); }
+  }
+
+  // typing
   input.addEventListener('input', () => {
-    hint.hidden = true;
+    say(hint, '');
+    if (!panel.hidden || !done.hidden) resetToSearch(false);   // typing a new name starts over
     clearTimeout(timer);
     const q = input.value.trim();
-    if (q.length < 3) { ctrl && ctrl.abort(); close(); return; }
+    if (q.length < 3) { ctrl && ctrl.abort(); closeList(); return; }
     timer = setTimeout(async () => {
       ctrl && ctrl.abort(); ctrl = new AbortController();
-      try {
-        const res = await fetch('?suggest=' + encodeURIComponent(q), { signal: ctrl.signal });
-        if (!res.ok) throw new Error('bad response');
-        render((await res.json()).parties || [], q);
-      } catch (e) { if (e.name !== 'AbortError') close(); }   // if it fails, the button still works
+      try { render(await suggest(q, ctrl.signal), q); }
+      catch (e) { if (e.name !== 'AbortError') closeList(); }
     }, 250);
   });
 
@@ -2022,22 +2272,62 @@ button.rsvp-btn{
     if (e.key === 'ArrowDown') { e.preventDefault(); highlight((active + 1) % items.length); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); highlight((active - 1 + items.length) % items.length); }
     else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); items[active].dispatchEvent(new MouseEvent('mousedown')); }
-    else if (e.key === 'Escape') { close(); }
+    else if (e.key === 'Escape') { closeList(); }
   });
 
-  document.addEventListener('click', e => { if (!form.contains(e.target)) close(); });
+  document.addEventListener('click', e => { if (!form.contains(e.target)) closeList(); });
 
-  form.addEventListener('submit', e => {
+  // "Find your Invitation" button / Enter
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
     const q = input.value.trim();
-    if (q.length < 3) {
-      e.preventDefault();
-      hint.textContent = q ? 'Please type at least 3 letters.' : 'Please type your name first.';
-      hint.hidden = false; input.focus(); return;
-    }
-    input.value = q;
+    if (q.length < 3) { say(hint, q ? 'Please type at least 3 letters.' : 'Please type your name first.'); input.focus(); return; }
+    say(hint, '');
+    try {
+      const parties = await suggest(q);
+      if (parties.length === 1) openParty(parties[0].match);          // one match: open it straight away
+      else if (parties.length > 1) render(parties, q);                // several: let them choose
+      else say(hint, 'We couldn’t find that name. Check the spelling, or try your first or last name.');
+    } catch (e2) { say(hint, 'We couldn’t reach the guest list. Please try again.'); }
   });
-})();
 
+  // save
+  confirmBtn.addEventListener('click', async () => {
+    const answers = [];
+    for (let i = 0; i < memberCount; i++) {
+      const c = panel.querySelector('input[name="rp-ans-' + i + '"]:checked');
+      if (!c) { say(err, 'Please choose Attending or Not attending for everyone.'); return; }
+      answers.push(c.value);
+    }
+    say(err, '');
+    confirmBtn.disabled = true; confirmBtn.textContent = 'Sending…';
+    try {
+      const res = await fetch('?save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': CSRF },
+        body: JSON.stringify({ answers, message: msg.value.trim() })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error === 'closed' ? 'The RSVP deadline has passed. Please contact the couple.'
+                      : data.error === 'session' ? 'Your session expired. Please refresh the page and try again.'
+                      : 'Something went wrong. Please try again.');
+      }
+      document.getElementById('rp-done-text').textContent = answers.includes('Yes')
+        ? 'We can’t wait to celebrate with you.'
+        : 'We’ll miss you. Thank you for letting us know.';
+      panel.hidden = true; done.hidden = false;
+      done.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (e) {
+      say(err, e.message);
+    } finally {
+      confirmBtn.disabled = false; confirmBtn.textContent = 'Confirm RSVP ♥';
+    }
+  });
+
+  document.getElementById('rp-again').addEventListener('click', () => resetToSearch(true));
+  document.getElementById('rp-done-again').addEventListener('click', () => resetToSearch(true));
+})();
  
 // ── PRENUP LIGHTBOX ──
 let lightboxIndex = 0;
