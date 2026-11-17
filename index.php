@@ -143,6 +143,19 @@ if (isset($_GET['save'])) {
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Jheroll & Jennie · February 6, 2027</title>
+    <meta name="description" content="Join us in celebrating the wedding of Jheroll &amp; Jennie on February 6, 2027 at Chateaux De Paris, Silang, Cavite.">
+
+<!-- Link preview (Messenger, Facebook, Viber, WhatsApp, Telegram) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jheroll &amp; Jennie">
+<meta property="og:title" content="Jheroll &amp; Jennie · February 6, 2027">
+<meta property="og:description" content="You are cordially invited to celebrate our wedding. Tap to see the details and RSVP.">
+<meta property="og:url" content="https://jheroll.github.io/bhiewed/">
+<meta property="og:image" content="https://jheroll.github.io/bhiewed/images/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jheroll and Jennie">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="csrf-token" content="<?= htmlspecialchars($_SESSION['csrf'], ENT_QUOTES) ?>">  
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Cormorant+Upright:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Josefin+Sans:wght@200;300;400&family=Great+Vibes&family=Pinyon+Script&display=swap" rel="stylesheet"/>
 <style>
