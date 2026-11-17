@@ -150,8 +150,8 @@ if (isset($_GET['save'])) {
 <meta property="og:site_name" content="Jheroll &amp; Jennie">
 <meta property="og:title" content="Jheroll &amp; Jennie · February 6, 2027">
 <meta property="og:description" content="You are cordially invited to celebrate our wedding. Tap to see the details and RSVP.">
-<meta property="og:url" content="https://jheroll.github.io/bhiewed/">
-<meta property="og:image" content="https://jheroll.github.io/bhiewed/images/og-image.jpg">
+<meta property="og:url" content="http://16.179.232.24/bhiewed/">
+<meta property="og:image" content="http://16.179.232.24/bhiewed/images/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Jheroll and Jennie">
