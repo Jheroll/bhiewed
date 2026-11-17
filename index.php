@@ -2098,7 +2098,8 @@ button.rsvp-btn{
 
 
     <div class="gift-note">
-        <p class="gift-title">— Gift Note —</p>
+   
+          <p class="sec-label reveal"> Gift Note  </p>
         <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
         <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
       </div>
