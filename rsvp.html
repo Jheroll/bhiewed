@@ -998,6 +998,125 @@ padding-top:68px;            /* was 84px, moves the logo up */
 .photo-banner{
   padding-top:68px !important;       /* desktop: just under the 60px nav */
 }
+
+  /* ── FIND YOUR INVITATION ── */
+.rsvp-find{
+  width:100%;
+  max-width:480px;
+  margin:0 auto;
+  padding:0 1.2rem;
+  text-align:center;
+}
+.rf-title{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(2rem, 6vw, 2.8rem);
+  color:#7D1D30;
+  line-height:1.15;
+}
+.rf-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.05rem, 3.4vw, 1.2rem);
+  color:#5C1523;
+  margin:0.6rem 0 1.8rem;
+}
+.rf-form{text-align:left;}
+.rf-label{
+  display:block;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.62rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:#9B2335;
+  margin-bottom:0.55rem;
+}
+.rf-row{display:flex;gap:0.6rem;}
+.rf-row input{
+  flex:1;
+  min-width:0;
+  padding:0.95rem 1.1rem;
+  background:#FDF6EE;
+  border:1px solid #E8B4BB;
+  border-radius:999px;
+  outline:none;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;
+  color:#3D0C11;
+  transition:border-color .2s, box-shadow .2s;
+}
+.rf-row input::placeholder{color:#B58A8C;font-style:italic;}
+.rf-row input:focus{
+  border-color:#C9A84C;
+  box-shadow:0 0 0 3px rgba(201,168,76,0.2);
+}
+.rf-btn{
+  flex-shrink:0;
+  padding:0 1.6rem;
+  background:#7D1D30;
+  color:#FDF6EE;
+  border:1.5px solid #C9A84C;
+  border-radius:999px;
+  cursor:pointer;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.68rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  transition:background .2s, transform .2s;
+}
+.rf-btn:hover{background:#5F1727;transform:translateY(-1px);}
+.rf-btn:disabled{opacity:.6;cursor:wait;transform:none;}
+.rf-btn:focus-visible{outline:2px solid #C9A84C;outline-offset:2px;}
+.rf-msg{
+  min-height:1.4em;
+  margin-top:1rem;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.05rem;
+  color:#9A6B75;
+}
+.rf-msg.rf-error{color:#B3261E;font-style:normal;}
+.rf-results{
+  list-style:none;
+  margin:0.6rem 0 0;
+  padding:0;
+  text-align:left;
+}
+.rf-result{
+  width:100%;
+  display:block;
+  text-align:left;
+  margin-top:0.7rem;
+  padding:1rem 1.2rem;
+  background:#fff;
+  border:1px solid #E8B4BB;
+  border-radius:14px;
+  cursor:pointer;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;
+  line-height:1.5;
+  color:#5C1523;
+  transition:border-color .2s, box-shadow .2s;
+}
+.rf-result:hover,
+.rf-result:focus-visible{
+  border-color:#C9A84C;
+  box-shadow:0 6px 18px rgba(125,29,48,0.1);
+  outline:none;
+}
+.rf-seats{
+  display:block;
+  margin-top:0.25rem;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.58rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:#C9A84C;
+}
+@media(max-width:420px){
+  .rf-row{flex-direction:column;}
+  .rf-btn{padding:0.95rem;}
+}
   
 </style>
 </head>
@@ -1143,27 +1262,32 @@ padding-top:68px;            /* was 84px, moves the logo up */
        <div class="rsvp-logo">
     <img src="images/logo.png" alt="Jheroll &amp; Jennie logo" loading="lazy">
   </div>
-      <div class="gift-note">
-    <p class="gift-title">— RSVP —</p>
-   <div class="rsvp-search" id="rsvp-search">
-  <label class="rs-label" for="rs-input">Find your name</label>
 
-  <div class="rs-field">
-    <svg class="rs-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-    <input id="rs-input" type="text" autocomplete="off" autocapitalize="words" spellcheck="false"
-           placeholder="Type your first or last name"
-           role="combobox" aria-expanded="false" aria-controls="rs-list" aria-autocomplete="list">
-    <button type="button" class="rs-clear" id="rs-clear" aria-label="Clear search" hidden>&times;</button>
-  </div>
+      <div class="rsvp-find" id="rsvp-find">
+  <h2 class="rf-title">Find Your Invitation</h2>
+  <p class="rf-sub">Enter your name to see your invitation.</p>
 
-  <p class="rs-status" id="rs-status" aria-live="polite">Type at least 3 letters.</p>
-  <ul class="rs-list" id="rs-list" role="listbox" hidden></ul>
+  <form class="rf-form" id="rf-form" novalidate>
+    <label class="rf-label" for="rf-input">Your name</label>
+    <div class="rf-row">
+      <input id="rf-input" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="First or last name">
+      <button type="submit" class="rf-btn" id="rf-btn">Search</button>
+    </div>
+  </form>
+
+  <p class="rf-msg" id="rf-msg" aria-live="polite"></p>
+  <ul class="rf-results" id="rf-results" hidden></ul>
 </div>
+
+      
+  <div class="gift-note">
+    <p class="gift-title">— RSVP —</p>
+
       <div class="rsvp-wrap">
         <a href="YOUR_RSVP_LINK_HERE" target="_blank" rel="noopener" class="rsvp-btn">
           ♥ RSVP NOW
         </a>
-</div>
+    </div>
   
     </div>
   </section>
