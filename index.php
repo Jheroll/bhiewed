@@ -1395,6 +1395,16 @@ button.rsvp-btn{
 .rp-done p:not(.rp-done-title){font-family:'Cormorant Garamond',serif;font-size:1.2rem;line-height:1.7;color:#5C1523;margin-top:0.6rem;}
 .rp-done .rp-done-small{font-style:italic;font-size:1.05rem;color:#9A6B75;}
 @media(max-width:420px){.rp-toggle{width:100%;}.rp-toggle label{flex:1;}.rp-toggle span{text-align:center;padding:0.6rem 0.4rem;}}
+
+    #rsvp .sec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(2rem,5vw,3.2rem);
+  color:#7D1D30;
+  text-align:center;
+  margin-bottom:0.5rem;
+}
 </style>
 </head>
 <body>
@@ -2041,7 +2051,7 @@ button.rsvp-btn{
     <img src="images/logo.png" alt="Jheroll &amp; Jennie logo" loading="lazy">
   </div>
 
-  <p class="sec-label reveal"> RSVP </p>
+<h2 class="sec-title reveal">RSVP</h2>
 
       <div class="rsvp-note">
         <p class="rsvp-seats">We have reserved <span class="seat-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> seat(s) in your honor.</p>
