@@ -1987,29 +1987,6 @@ button.rsvp-btn{
   </section>
 
 
-      <!-- gift -->
-  <section id="gift" style="background:#7D1D30;">
-    <div class="sec-bg" aria-hidden="true">
-      <svg width="100%" height="100%" viewBox="0 0 900 500" preserveAspectRatio="xMidYMid slice">
-        <g class="bloom1" style="transform-origin:80px 100px">
-          <g transform="translate(80,100)" opacity="0.07" fill="#7D1D30">
-            <ellipse rx="6" ry="45" transform="rotate(0)"/><ellipse rx="6" ry="45" transform="rotate(30)"/><ellipse rx="6" ry="45" transform="rotate(60)"/><ellipse rx="6" ry="45" transform="rotate(90)"/><ellipse rx="6" ry="45" transform="rotate(120)"/><ellipse rx="6" ry="45" transform="rotate(150)"/><circle r="14" fill="#E8B4BB"/>
-          </g>
-        </g>
-        <g class="bloom4" style="transform-origin:860px 400px">
-          <g transform="translate(860,400)" opacity="0.06" fill="#C9A84C">
-            <ellipse rx="5" ry="38" transform="rotate(0)"/><ellipse rx="5" ry="38" transform="rotate(45)"/><ellipse rx="5" ry="38" transform="rotate(90)"/><ellipse rx="5" ry="38" transform="rotate(135)"/><circle r="12" fill="#E8D5A3"/>
-          </g>
-        </g>
-        <path class="wave2" d="M0,350 C150,300 350,380 600,330 C780,295 870,350 900,320 L900,500 L0,500 Z" fill="#C9A84C" opacity="0.04"/>
-      </svg>
-    </div>
-    <div class="inner">
-      <p class="sec-label reveal" style="color:#C9A84C;"> Gift Note </p>
-      <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
-        <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
-    </div>
-  </section>
 
   
 
@@ -2035,12 +2012,8 @@ button.rsvp-btn{
       <div class="rsvp-logo">
         <img src="images/logo.png" alt="Jheroll &amp; Jennie logo" loading="lazy">
       </div>
-
-      <div class="gift-note">
-        <p class="gift-title">— Gift Note —</p>
-        <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
-        <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
-      </div>
+    <p class="sec-label reveal"> RSVP </p>
+ 
 
       <div class="rsvp-note">
         <p class="rsvp-seats">We have reserved <span class="seat-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> seat(s) in your honor.</p>
@@ -2091,6 +2064,12 @@ button.rsvp-btn{
   <p class="rp-done-small">You can search again to change your answer before December 13, 2026.</p>
   <button type="button" class="rp-again" id="rp-done-again">Back to search</button>
 </div>
+
+             <div class="gift-note">
+        <p class="gift-title">— Gift Note —</p>
+        <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
+        <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
+      </div>
         
     </div>
   </section>
