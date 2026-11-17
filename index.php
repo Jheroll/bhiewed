@@ -1,3 +1,54 @@
+<?php
+declare(strict_types=1);
+
+// LOCAL TESTING: __DIR__ . '/data/guests.txt'     EC2 SERVER: '/var/lib/rsvp_data/guests.txt'
+const GUESTS_FILE = __DIR__ . '/data/guests.txt';
+const MAX_RESULTS = 5;
+
+function norm(string $s): string {
+    $s = mb_strtolower($s, 'UTF-8');
+    $s = preg_replace('/[^a-z0-9 ]/u', '', $s) ?? '';
+    return trim(preg_replace('/\s+/', ' ', $s) ?? '');
+}
+
+// live search: index.php?suggest=mar  →  JSON with the matching invitations only
+if (isset($_GET['suggest'])) {
+    header('Content-Type: application/json; charset=utf-8');
+    header('Cache-Control: no-store');
+    header('X-Content-Type-Options: nosniff');
+
+    $q = norm((string)$_GET['suggest']);
+    $words = array_slice(array_values(array_filter(explode(' ', $q), fn($w) => mb_strlen($w) >= 2)), 0, 4);
+    if (mb_strlen($q) < 3 || !$words || !is_file(GUESTS_FILE)) {
+        echo json_encode(['parties' => []]);
+        exit;
+    }
+
+    $parties = [];
+    $fh = fopen(GUESTS_FILE, 'r');
+    while (($r = fgetcsv($fh, 0, ',', '"', '')) !== false) {
+        if ($r === [null] || count($r) < 2) continue;
+        $party = trim((string)preg_replace('/^\xEF\xBB\xBF/', '', (string)$r[0]));
+        $name  = trim((string)$r[1]);
+        if ($name === '' || strtolower($party) === 'party') continue;
+        $parties[$party][] = $name;
+    }
+    fclose($fh);
+
+    $out = [];
+    foreach ($parties as $p => $names) {
+        foreach ($names as $name) {
+            $n = norm($name);
+            $hit = true;
+            foreach ($words as $w) { if (!str_contains($n, $w)) { $hit = false; break; } }
+            if ($hit) { $out[] = ['match' => $name, 'names' => $names]; break; }
+        }
+        if (count($out) >= MAX_RESULTS) break;
+    }
+    echo json_encode(['parties' => $out], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1067,6 +1118,44 @@ button.rsvp-btn{
   cursor:pointer;
   font-family:inherit;
 }
+
+  /* ── RSVP DROPDOWN ── */
+#rsvp .inner{position:relative;z-index:3;}   /* keeps the dropdown above the section's bottom fade */
+.rf-live{position:relative;}
+.rf-list{
+  position:absolute;
+  top:calc(100% + 0.4rem);
+  left:0; right:0;
+  z-index:20;
+  list-style:none;
+  margin:0; padding:0.3rem;
+  background:#fff;
+  border:1px solid #E8B4BB;
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(125,29,48,0.15);
+  text-align:left;
+}
+.rf-opt{
+  padding:0.8rem 1rem;
+  border-radius:14px;
+  cursor:pointer;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem;
+  line-height:1.4;
+  color:#5C1523;
+}
+.rf-opt:hover,
+.rf-opt[aria-selected="true"]{background:#F5E6E8;}
+.rf-opt strong{color:#7D1D30;font-weight:600;}
+.rf-opt small{
+  display:block;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.56rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:#C9A84C;
+}
+.rf-note{padding:0.8rem 1rem;font-style:italic;color:#9A6B75;font-family:'Cormorant Garamond',serif;}
   
 </style>
 </head>
@@ -1732,12 +1821,14 @@ button.rsvp-btn{
         <p class="rsvp-thanks">Thank you, and we look forward to celebrating with you!</p>
       </div>
 
-    <!-- SEARCH BOX -->
-<form class="rsvp-search" id="rsvp-search" action="rsvp.html" method="get" autocomplete="off" novalidate>
-  <div class="rf-row">
+   <!-- SEARCH BOX -->
+<form class="rsvp-search" id="rsvp-search" action="rsvp.php" method="get" autocomplete="off" novalidate>
+  <div class="rf-row rf-live">
     <input id="rf-input" name="q" type="text" maxlength="60"
-           aria-label="Your name"
-           autocapitalize="words" spellcheck="false" placeholder="Type your first or last name for RSVP">
+           role="combobox" aria-expanded="false" aria-controls="rf-list" aria-autocomplete="list"
+           aria-label="Your name" autocapitalize="words" spellcheck="false"
+           placeholder="Type your first or last name for RSVP">
+    <ul class="rf-list" id="rf-list" role="listbox" hidden></ul>
   </div>
   <p class="rf-hint" id="rf-hint" role="alert" hidden></p>
 </form>
@@ -1865,24 +1956,86 @@ button.rsvp-btn{
 
 <script>
 
-  // ── RSVP search: open rsvp.html only when a name is typed ──
+// ── RSVP dropdown search ──
 (function () {
   const form  = document.getElementById('rsvp-search');
   if (!form) return;
   const input = document.getElementById('rf-input');
+  const list  = document.getElementById('rf-list');
   const hint  = document.getElementById('rf-hint');
+  let timer, ctrl, items = [], active = -1;
 
-  function warn(text){ hint.textContent = text; hint.hidden = false; input.focus(); }
+  function close(){ list.hidden = true; input.setAttribute('aria-expanded', 'false'); items = []; active = -1; }
+  function note(t){ list.innerHTML = ''; items = []; const li = document.createElement('li'); li.className = 'rf-note'; li.textContent = t; list.appendChild(li); list.hidden = false; }
 
-  form.addEventListener('submit', function (e) {
-    const q = input.value.trim();
-    if (!q)          { e.preventDefault(); warn('Please type your name first.'); return; }
-    if (q.length < 3){ e.preventDefault(); warn('Please type at least 3 letters.'); return; }
-    input.value = q;            // sends the name without extra spaces
+  function mark(parent, text, q){
+    const i = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1;
+    if (i < 0) { parent.append(text); return; }
+    parent.append(text.slice(0, i));
+    const b = document.createElement('strong');
+    b.textContent = text.slice(i, i + q.length);
+    parent.append(b, text.slice(i + q.length));
+  }
+
+  function go(name){ window.location.href = 'rsvp.php?q=' + encodeURIComponent(name); }
+
+  function render(parties, q){
+    list.innerHTML = ''; items = []; active = -1;
+    if (!parties.length) { note('No match yet. Try another spelling.'); return; }
+    parties.forEach((p, i) => {
+      const li = document.createElement('li');
+      li.className = 'rf-opt'; li.id = 'rf-opt-' + i; li.setAttribute('role', 'option');
+      p.names.forEach((n, k) => { if (k) li.append(' · '); mark(li, n, q); });
+      const s = document.createElement('small');
+      s.textContent = p.names.length + (p.names.length === 1 ? ' seat' : ' seats') + ' reserved';
+      li.appendChild(s);
+      li.addEventListener('mousedown', e => { e.preventDefault(); go(p.match); });
+      list.appendChild(li); items.push(li);
+    });
+    list.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+  }
+
+  function highlight(i){
+    items.forEach((el, k) => el.setAttribute('aria-selected', k === i ? 'true' : 'false'));
+    active = i;
+    if (i >= 0) input.setAttribute('aria-activedescendant', items[i].id);
+  }
+
+  input.addEventListener('input', () => {
     hint.hidden = true;
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (q.length < 3) { ctrl && ctrl.abort(); close(); return; }
+    timer = setTimeout(async () => {
+      ctrl && ctrl.abort(); ctrl = new AbortController();
+      try {
+        const res = await fetch('?suggest=' + encodeURIComponent(q), { signal: ctrl.signal });
+        if (!res.ok) throw new Error('bad response');
+        render((await res.json()).parties || [], q);
+      } catch (e) { if (e.name !== 'AbortError') close(); }   // if it fails, the button still works
+    }, 250);
   });
 
-  input.addEventListener('input', function () { hint.hidden = true; });
+  input.addEventListener('keydown', e => {
+    if (list.hidden || !items.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); highlight((active + 1) % items.length); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); highlight((active - 1 + items.length) % items.length); }
+    else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); items[active].dispatchEvent(new MouseEvent('mousedown')); }
+    else if (e.key === 'Escape') { close(); }
+  });
+
+  document.addEventListener('click', e => { if (!form.contains(e.target)) close(); });
+
+  form.addEventListener('submit', e => {
+    const q = input.value.trim();
+    if (q.length < 3) {
+      e.preventDefault();
+      hint.textContent = q ? 'Please type at least 3 letters.' : 'Please type your name first.';
+      hint.hidden = false; input.focus(); return;
+    }
+    input.value = q;
+  });
 })();
 
  
