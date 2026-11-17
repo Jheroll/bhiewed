@@ -2069,11 +2069,7 @@ button.rsvp-btn{
   <button type="button" class="rp-again" id="rp-done-again">Back to search</button>
 </div>
 
-<div class="rsvp-wrap">
-  <button type="submit" form="rsvp-search" class="rsvp-btn">
-    Find your Invitation ♥
-  </button>
-</div>
+
     </div>
   </section>
 
@@ -2145,7 +2141,6 @@ button.rsvp-btn{
   const input = document.getElementById('rf-input');
   const list  = document.getElementById('rf-list');
   const hint  = document.getElementById('rf-hint');
-  const findBtn = document.getElementById('rsvp-find-btn');
   const panel = document.getElementById('rsvp-panel');
   const rows  = document.getElementById('rp-members');
   const msg   = document.getElementById('rp-message');
@@ -2223,7 +2218,6 @@ button.rsvp-btn{
     msg.disabled = !!data.closed;
     const blank = document.querySelector('.seat-blank');
     if (blank) blank.textContent = memberCount;                // fills "We have reserved __ seat(s)"
-    findBtn.hidden = true;
     done.hidden = true;
     panel.hidden = false;
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -2244,7 +2238,7 @@ button.rsvp-btn{
   }
 
   function resetToSearch(clear){
-    panel.hidden = true; done.hidden = true; findBtn.hidden = false;
+        panel.hidden = true; done.hidden = true;
     closeList(); say(err, ''); say(hint, '');
     if (clear) { input.value = ''; input.focus(); }
   }
