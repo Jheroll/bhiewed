@@ -998,6 +998,63 @@ padding-top:68px;            /* was 84px, moves the logo up */
 .photo-banner{
   padding-top:68px !important;       /* desktop: just under the 60px nav */
 }
+
+  /* ── RSVP SEARCH BOX ── */
+.rsvp-search{
+  width:100%;
+  max-width:480px;
+  margin:0 auto 1.6rem;
+  padding:0 1.2rem;
+  text-align:left;
+}
+.rf-label{
+  display:block;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.62rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:#9B2335;
+  margin-bottom:0.55rem;
+}
+.rf-row{display:flex;gap:0.6rem;}
+.rf-row input{
+  flex:1;
+  min-width:0;
+  padding:0.95rem 1.1rem;
+  background:#FDF6EE;
+  border:1px solid #E8B4BB;
+  border-radius:999px;
+  outline:none;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;
+  color:#3D0C11;
+  transition:border-color .2s, box-shadow .2s;
+}
+.rf-row input::placeholder{color:#B58A8C;font-style:italic;}
+.rf-row input:focus{
+  border-color:#C9A84C;
+  box-shadow:0 0 0 3px rgba(201,168,76,0.2);
+}
+.rf-btn{
+  flex-shrink:0;
+  padding:0 1.6rem;
+  background:#7D1D30;
+  color:#FDF6EE;
+  border:1.5px solid #C9A84C;
+  border-radius:999px;
+  cursor:pointer;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.68rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  transition:background .2s, transform .2s;
+}
+.rf-btn:hover{background:#5F1727;transform:translateY(-1px);}
+.rf-btn:focus-visible{outline:2px solid #C9A84C;outline-offset:2px;}
+@media(max-width:420px){
+  .rf-row{flex-direction:column;}
+  .rf-btn{padding:0.95rem;}
+}
   
 </style>
 </head>
@@ -1622,7 +1679,7 @@ padding-top:68px;            /* was 84px, moves the logo up */
 
   
 
-    <!-- RSVP -->
+     <!-- RSVP -->
   <section id="rsvp" style="background:#F0E8E0;">
     <div class="sec-bg" aria-hidden="true">
       <svg width="100%" height="100%" viewBox="0 0 900 600" preserveAspectRatio="xMidYMid slice">
@@ -1639,32 +1696,45 @@ padding-top:68px;            /* was 84px, moves the logo up */
         <path class="wave1" d="M0,500 C200,450 400,520 650,480 C800,455 880,500 900,475 L900,600 L0,600 Z" fill="#C9A84C" opacity="0.04"/>
       </svg>
     </div>
+
     <div class="inner">
-       <div class="rsvp-logo">
-    <img src="images/logo.png" alt="Jheroll &amp; Jennie logo" loading="lazy">
-  </div>
+      <div class="rsvp-logo">
+        <img src="images/logo.png" alt="Jheroll &amp; Jennie logo" loading="lazy">
+      </div>
+
       <div class="gift-note">
-    <p class="gift-title">— Gift Note —</p>
-    <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
-    <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
-  </div>
+        <p class="gift-title">— Gift Note —</p>
+        <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
+        <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
+      </div>
+
       <div class="rsvp-note">
-  <p class="rsvp-seats">We have reserved <span class="seat-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> seat(s) in your honor.</p>
+        <p class="rsvp-seats">We have reserved <span class="seat-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> seat(s) in your honor.</p>
 
-  <p>Kindly confirm your attendance on or before <strong>December 13, 2026</strong>, through the RSVP section of our wedding website.</p>
+        <p>Kindly confirm your attendance on or before <strong>December 13, 2026</strong>, through the RSVP section of our wedding website.</p>
 
-  <p>Your response will help us make the necessary arrangements for our special day.</p>
+        <p>Your response will help us make the necessary arrangements for our special day.</p>
 
-  <p class="rsvp-warning">Please note: Guests who do not respond by the RSVP deadline will be considered as not attending.</p>
+        <p class="rsvp-warning">Please note: Guests who do not respond by the RSVP deadline will be considered as not attending.</p>
 
-  <p class="rsvp-thanks">Thank you, and we look forward to celebrating with you!</p>
-</div>
+        <p class="rsvp-thanks">Thank you, and we look forward to celebrating with you!</p>
+      </div>
+
+      <!-- SEARCH BOX -->
+      <form class="rsvp-search" action="http://16.179.232.24/rsvp.php" method="get" autocomplete="off">
+        <label class="rf-label" for="rf-input">Find your invitation</label>
+        <div class="rf-row">
+          <input id="rf-input" name="q" type="text" required minlength="3" maxlength="60"
+                 autocapitalize="words" spellcheck="false" placeholder="Type your first or last name">
+          <button type="submit" class="rf-btn">Search</button>
+        </div>
+      </form>
+
       <div class="rsvp-wrap">
-        <a href="YOUR_RSVP_LINK_HERE" target="_blank" rel="noopener" class="rsvp-btn">
+        <a href="http://16.179.232.24/rsvp.php" class="rsvp-btn">
           ♥ RSVP NOW
         </a>
-</div>
-  
+      </div>
     </div>
   </section>
 
