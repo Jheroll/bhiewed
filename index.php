@@ -2029,7 +2029,7 @@ button.rsvp-btn{
         <p class="rsvp-thanks">Thank you, and we look forward to celebrating with you!</p>
       </div>
 
-        <!-- SEARCH BOX -->
+<!-- SEARCH BOX -->
 <form class="rsvp-search" id="rsvp-search" action="#" autocomplete="off" novalidate>
   <div class="rf-row rf-live">
     <input id="rf-input" name="q" type="text" maxlength="60"
@@ -2040,6 +2040,8 @@ button.rsvp-btn{
   </div>
   <p class="rf-hint" id="rf-hint" role="alert" hidden></p>
 </form>
+
+
 
 <!-- YOUR GROUP: appears after a name is chosen -->
 <div class="rsvp-panel" id="rsvp-panel" hidden>
@@ -2066,7 +2068,12 @@ button.rsvp-btn{
   <p class="rp-done-small">You can search again to change your answer before December 13, 2026.</p>
   <button type="button" class="rp-again" id="rp-done-again">Back to search</button>
 </div>
-        
+
+<div class="rsvp-wrap">
+  <button type="submit" form="rsvp-search" class="rsvp-btn">
+    Find your Invitation ♥
+  </button>
+</div>
     </div>
   </section>
 
