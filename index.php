@@ -894,10 +894,40 @@ section .inner{position:relative;z-index:1;}
   text-align:center;
 }
 .rsvp-warning{
+  position:relative;
   font-style:italic;
   color:#9A6B75 !important;
-  padding-top:0.9rem;
-  border-top:1px solid rgba(201,168,76,0.4);
+  border-top:none;
+  margin-top:2rem !important;
+  padding-top:2.2rem;
+}
+/* the fading line, with a gap in the middle for the diamond */
+.rsvp-warning::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:50%;
+  width:min(300px, 80%);
+  height:1px;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,
+    transparent 0%,
+    rgba(201,168,76,0.75) 30%,
+    transparent 46%,
+    transparent 54%,
+    rgba(201,168,76,0.75) 70%,
+    transparent 100%);
+}
+/* the diamond */
+.rsvp-warning::after{
+  content:'';
+  position:absolute;
+  top:0;
+  left:50%;
+  width:7px;
+  height:7px;
+  background:#C9A84C;
+  transform:translate(-50%,-50%) rotate(45deg);
 }
 .rsvp-thanks{
   font-size:clamp(1.05rem, 3.6vw, 1.3rem) !important;
@@ -923,7 +953,7 @@ section .inner{position:relative;z-index:1;}
   margin:0 auto;
   padding:0 1.2rem 2rem;
   text-align:center;
-  border-bottom:1px solid rgba(201,168,76,0.4);
+
 }
 .gift-title{
   font-family:'Josefin Sans',sans-serif;
@@ -2011,7 +2041,7 @@ button.rsvp-btn{
         <img src="images/logo.png" alt="Jheroll &amp; Jennie logo" loading="lazy">
       </div>
 
-      <p class="sec-label reveal"> The Wedding Party </p>
+      <p class="sec-label reveal"> RSVP </p>
 
       <div class="rsvp-note">
         <p class="rsvp-seats">We have reserved <span class="seat-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> seat(s) in your honor.</p>
@@ -2068,7 +2098,7 @@ button.rsvp-btn{
 
 
     <div class="gift-note">
-        <p class="gift-title">— RSVP —</p>
+        <p class="gift-title">— Gift Note —</p>
         <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
         <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
       </div>
