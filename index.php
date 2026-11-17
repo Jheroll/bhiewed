@@ -2114,7 +2114,7 @@ button.rsvp-btn{
   </section>
 
   <!-- ENTOURAGE -->
-  <section id="entourage" style="background:#FDF6EE;">
+  <section id="gift-note" style="background:#FDF6EE;">
     <div class="sec-bg" aria-hidden="true">
       <svg width="100%" height="100%" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid slice">
         <g class="bloom1" style="transform-origin:150px 150px">
