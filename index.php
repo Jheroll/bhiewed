@@ -2031,11 +2031,12 @@ button.rsvp-btn{
 
 <!-- SEARCH BOX -->
 <form class="rsvp-search" id="rsvp-search" action="#" autocomplete="off" novalidate>
+    <p class="rf-label" style="text-align:center;">Type your name to find your invitation</p>
   <div class="rf-row rf-live">
     <input id="rf-input" name="q" type="text" maxlength="60"
            role="combobox" aria-expanded="false" aria-controls="rf-list" aria-autocomplete="list"
            aria-label="Your name" autocapitalize="words" spellcheck="false"
-           placeholder="Type your first or last name for RSVP">
+           placeholder="Type your name here">
     <ul class="rf-list" id="rf-list" role="listbox" hidden></ul>
   </div>
   <p class="rf-hint" id="rf-hint" role="alert" hidden></p>
