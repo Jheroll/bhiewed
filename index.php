@@ -2112,14 +2112,46 @@ button.rsvp-btn{
 
     </div>
   </section>
-    <section>
-         <div class="gift-note">
-   
-          <p class="sec-label reveal"> Gift Note  </p>
+
+  <!-- ENTOURAGE -->
+  <section id="entourage" style="background:#FDF6EE;">
+    <div class="sec-bg" aria-hidden="true">
+      <svg width="100%" height="100%" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid slice">
+        <g class="bloom1" style="transform-origin:150px 150px">
+          <g transform="translate(150,150)" opacity="0.07" fill="#7D1D30">
+            <ellipse rx="7" ry="55" transform="rotate(0)"/><ellipse rx="7" ry="55" transform="rotate(36)"/><ellipse rx="7" ry="55" transform="rotate(72)"/><ellipse rx="7" ry="55" transform="rotate(108)"/><ellipse rx="7" ry="55" transform="rotate(144)"/><circle r="17" fill="#E8B4BB"/>
+          </g>
+        </g>
+        <g class="bloom2" style="transform-origin:800px 600px">
+          <g transform="translate(800,600)" opacity="0.06" fill="#C9A84C">
+            <ellipse rx="6" ry="48" transform="rotate(0)"/><ellipse rx="6" ry="48" transform="rotate(30)"/><ellipse rx="6" ry="48" transform="rotate(60)"/><ellipse rx="6" ry="48" transform="rotate(90)"/><ellipse rx="6" ry="48" transform="rotate(120)"/><ellipse rx="6" ry="48" transform="rotate(150)"/><circle r="15" fill="#E8D5A3"/>
+          </g>
+        </g>
+        <g class="bloom3" style="transform-origin:500px 100px">
+          <g transform="translate(500,100)" opacity="0.04" fill="#E8B4BB">
+            <ellipse rx="5" ry="38" transform="rotate(0)"/><ellipse rx="5" ry="38" transform="rotate(45)"/><ellipse rx="5" ry="38" transform="rotate(90)"/><ellipse rx="5" ry="38" transform="rotate(135)"/><circle r="12" fill="#C9A84C"/>
+          </g>
+        </g>
+        <path class="wave3" d="M0,550 C200,500 400,570 650,530 C800,505 880,550 900,520 L900,700 L0,700 Z" fill="#C9A84C" opacity="0.04"/>
+        <path class="wave1" d="M0,620 C250,575 450,640 700,600 C840,575 890,620 900,595 L900,700 L0,700 Z" fill="#E8B4BB" opacity="0.05"/>
+      </svg>
+    </div>
+
+    <div class="inner">
+      <p class="sec-label reveal"> Gift Note </p>
+
+      <div class="sec-div reveal"></div>
+
+      <div class="stagger">
+
         <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
         <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
-      </div>
-    </section>
+
+      </div><!-- /stagger -->
+    </div><!-- /inner -->
+  </section>
+
+
 
   <footer>
     <p class="footer-names">Jheroll & Jennie</p>
