@@ -1405,6 +1405,27 @@ button.rsvp-btn{
   text-align:center;
   margin-bottom:0.5rem;
 }
+
+    /* ── GIFT NOTE (centered) ── */
+.gift-body{
+  max-width:560px;
+  margin:0 auto;
+  padding:0 1.2rem;
+  text-align:center;
+}
+.gift-body p{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(1.05rem, 3.4vw, 1.3rem);
+  color:#5C1523;
+  line-height:1.8;
+  margin:0 0 1rem;
+}
+.gift-body strong{
+  font-style:normal;
+  font-weight:600;
+  color:#7D1D30;
+}
 </style>
 </head>
 <body>
@@ -2113,7 +2134,7 @@ button.rsvp-btn{
     </div>
   </section>
 
-  <!-- ENTOURAGE -->
+
   <section id="gift-note" style="background:#FDF6EE;">
     <div class="sec-bg" aria-hidden="true">
       <svg width="100%" height="100%" viewBox="0 0 900 700" preserveAspectRatio="xMidYMid slice">
@@ -2137,16 +2158,13 @@ button.rsvp-btn{
       </svg>
     </div>
 
-    <div class="inner">
+        <div class="inner">
       <p class="sec-label reveal"> Gift Note </p>
-
       <div class="sec-div reveal"></div>
 
-      <div class="stagger">
-
+      <div class="gift-body stagger">
         <p>Your presence on our special day is already <strong>the greatest gift</strong>.</p>
         <p>If you'd like to give us something, we would truly appreciate a cash gift to help us start our next chapter together.</p>
-
       </div><!-- /stagger -->
     </div><!-- /inner -->
   </section>
