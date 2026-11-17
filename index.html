@@ -1055,6 +1055,18 @@ padding-top:68px;            /* was 84px, moves the logo up */
   .rf-row{flex-direction:column;}
   .rf-btn{padding:0.95rem;}
 }
+
+  .rf-hint{
+  margin-top:0.7rem;
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;
+  color:#B3261E;
+}
+button.rsvp-btn{
+  cursor:pointer;
+  font-family:inherit;
+}
   
 </style>
 </head>
@@ -1720,21 +1732,21 @@ padding-top:68px;            /* was 84px, moves the logo up */
         <p class="rsvp-thanks">Thank you, and we look forward to celebrating with you!</p>
       </div>
 
-      <!-- SEARCH BOX -->
-      <form class="rsvp-search" action="http://16.179.232.24/rsvp.php" method="get" autocomplete="off">
-       
-        <div class="rf-row">
-          <input id="rf-input" name="q" type="text" required minlength="3" maxlength="60"
-                 autocapitalize="words" spellcheck="false" placeholder="Type your first or last name for RSVP">
-         
-        </div>
-      </form>
+    <!-- SEARCH BOX -->
+<form class="rsvp-search" id="rsvp-search" action="rsvp.html" method="get" autocomplete="off" novalidate>
+  <div class="rf-row">
+    <input id="rf-input" name="q" type="text" maxlength="60"
+           aria-label="Your name"
+           autocapitalize="words" spellcheck="false" placeholder="Type your first or last name for RSVP">
+  </div>
+  <p class="rf-hint" id="rf-hint" role="alert" hidden></p>
+</form>
 
-      <div class="rsvp-wrap">
-        <a href="http://16.179.232.24/rsvp.php" class="rsvp-btn">
-           Find your Invitation ♥
-        </a>
-      </div>
+<div class="rsvp-wrap">
+  <button type="submit" form="rsvp-search" class="rsvp-btn">
+    Find your Invitation ♥
+  </button>
+</div>
     </div>
   </section>
 
@@ -1852,6 +1864,26 @@ padding-top:68px;            /* was 84px, moves the logo up */
 </div><!-- end page-dashboard -->
 
 <script>
+
+  // ── RSVP search: open rsvp.html only when a name is typed ──
+(function () {
+  const form  = document.getElementById('rsvp-search');
+  if (!form) return;
+  const input = document.getElementById('rf-input');
+  const hint  = document.getElementById('rf-hint');
+
+  function warn(text){ hint.textContent = text; hint.hidden = false; input.focus(); }
+
+  form.addEventListener('submit', function (e) {
+    const q = input.value.trim();
+    if (!q)          { e.preventDefault(); warn('Please type your name first.'); return; }
+    if (q.length < 3){ e.preventDefault(); warn('Please type at least 3 letters.'); return; }
+    input.value = q;            // sends the name without extra spaces
+    hint.hidden = true;
+  });
+
+  input.addEventListener('input', function () { hint.hidden = true; });
+})();
 
  
 // ── PRENUP LIGHTBOX ──
