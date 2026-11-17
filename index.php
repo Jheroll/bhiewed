@@ -2037,11 +2037,11 @@ button.rsvp-btn{
     </div>
 
     <div class="inner">
-      <div class="rsvp-logo">
-        <img src="images/logo.png" alt="Jheroll &amp; Jennie logo" loading="lazy">
-      </div>
+  <div class="rsvp-logo">
+    <img src="images/logo.png" alt="Jheroll &amp; Jennie logo" loading="lazy">
+  </div>
 
-      <p class="sec-label reveal"> RSVP </p>
+  <p class="sec-label reveal"> RSVP </p>
 
       <div class="rsvp-note">
         <p class="rsvp-seats">We have reserved <span class="seat-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> seat(s) in your honor.</p>
